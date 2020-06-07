@@ -5,7 +5,10 @@
 ## Include vars if the file exists
 FILE=./vars.sh
 if [ -f "$FILE" ]; then
-    source ./vars.sh
+  source ./vars.sh
+else
+  echo -e "ERROR: Variable file not found!\n"
+  exit
 fi
 
 function promptCheckSubscription {

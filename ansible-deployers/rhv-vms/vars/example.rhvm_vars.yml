@@ -1,0 +1,11 @@
+---
+rhvm_fqdn: rhvm.example.com
+rhvm_insecure: true
+rhvm_user: admin@internal
+
+download_iso: true
+iso_link: http://mirror.twinlakes.net/centos/7.8.2003/isos/x86_64/CentOS-7-x86_64-DVD-2003.iso
+iso_name: CentOS-7
+
+rhv_cluster: myCluster
+rhv_datacenter: MyDC

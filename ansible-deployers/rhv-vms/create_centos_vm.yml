@@ -1,0 +1,67 @@
+---
+- name: Create and Manage Virtual Machines in Red Hat Virtualization
+  hosts: localhost
+  connection: local
+
+  gather_facts: false
+  vars_files:
+    - vars/rhvm_password.yml
+    - vars/rhvm_vars.yml
+
+  pre_tasks:
+    - name: Login to oVirt
+      ovirt_auth:
+        hostname: "{{ rhvm_fqdn }}"
+        username: "{{ rhvm_user }}"
+        password: "{{ rhvm_password }}"
+        ca_file: "{{ rhvm_cafile | default(omit) }}"
+        insecure: "{{ rhvm_insecure | default(true) }}"
+      tags:
+        - always
+
+  tasks:
+    - name: Create local working directory
+      file:
+        path: ./.generated_files/
+        state: directory
+        mode: 0777
+
+    - name: Check for existing CentOS ISO file
+      stat:
+        path: ./.generated_files/CentOS-7-x86_64-DVD-2003.iso
+      register: current_iso_details
+      when: download_iso
+
+    - name: Download CentOS ISO
+      get_url:
+        url: "{{ iso_link }}"
+        dest: ./.generated_files/CentOS-7-x86_64-DVD-2003.iso
+        mode: 0777
+      when: download_iso and current_iso_details.stat.exists == False
+
+    - name: Get CentOS ISO Size
+      stat:
+        path: ./.generated_files/CentOS-7-x86_64-DVD-2003.iso
+      register: iso_details
+      when: download_iso
+
+    - name: Add CentOS ISO to RHV data domain
+      ovirt_disk:
+        name: "{{ iso_name }}"
+        auth: "{{ ovirt_auth }}"
+        upload_image_path: ./.generated_files/CentOS-7-x86_64-DVD-2003.iso
+        storage_domain: data
+        size: "{{ iso_details.stat.size|human_readable | replace('GB','') | float | round(0,'ceil') | int }} Gib"
+        wait: true
+        bootable: true
+        format: raw
+        content_type: iso
+      when: download_iso
+
+  post_tasks:
+    - name: Logout from oVirt
+      ovirt_auth:
+        state: absent
+        ovirt_auth: "{{ ovirt_auth }}"
+      tags:
+        - always

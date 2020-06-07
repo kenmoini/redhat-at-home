@@ -1,0 +1,3 @@
+---
+vcenter_server: http://vcenter.example.com
+vcenter_username: administrator@example.com

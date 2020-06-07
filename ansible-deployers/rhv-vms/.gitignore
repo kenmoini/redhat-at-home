@@ -1,0 +1,4 @@
+generated_files/
+generated_files/**
+vars/rhvm_vars.yml
+vars/rhvm_password.yml

@@ -1,0 +1,3 @@
+deploy-satellite/vars.sh
+ansible-deployers/create-vmware-vms/vars/vcenter_vars.yaml
+ansible-deployers/create-vmware-vms/vars/vcenter_password.yaml

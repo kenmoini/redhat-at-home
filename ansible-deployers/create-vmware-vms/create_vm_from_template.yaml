@@ -1,0 +1,28 @@
+---
+- name: Create VMs in VMWare
+  hosts: localhost
+  connection: local
+
+  gather_facts: false
+  vars_files:
+    - vars/vcenter_password.yml
+    - vars/vcenter_vars.yml
+
+  pre_tasks:
+    - name: Set up local environment
+      include_tasks: tasks/local_vmware_setup.yaml
+
+  tasks:
+    - name: Clone the template
+      vmware_guest:
+        hostname: "{{ vcenter_server }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        validate_certs: False
+        name: "{{ new_vm_name }}"
+        template: "{{ template_name }}"
+        datacenter: "{{ vcenter_datacenter_name }}"
+        folder: "{{ vcenter_folder }}"
+        state: poweredon
+        cluster: "{{ vcenter_cluster_name }}"
+        wait_for_ip_address: yes
