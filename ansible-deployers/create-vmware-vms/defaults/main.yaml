@@ -1,2 +1,9 @@
 ---
 ansibleWorkingDirectory: "/opt/.ansible-generated"
+
+new_vm_name: AnsibleNode
+new_vm_state: poweredon
+template_name: RHELGoldImage
+vcenter_cluster_name: Default
+vcenter_datacenter_name: Default
+vcenter_folder: /DC1/vm

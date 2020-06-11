@@ -3,14 +3,18 @@
   hosts: localhost
   connection: local
 
-  gather_facts: false
+  gather_facts: true
   vars_files:
-    - vars/vcenter_password.yml
-    - vars/vcenter_vars.yml
+    - defaults/main.yaml
+    - vars/vcenter_password.yaml
+    - vars/vcenter_vars.yaml
 
   pre_tasks:
     - name: Set up local environment
-      include_tasks: tasks/local_vmware_setup.yaml
+      include_role:
+        name: ../roles/localVMWareSetup
+      tags:
+        - vmwareSetup
 
   tasks:
     - name: Clone the template
@@ -23,6 +27,6 @@
         template: "{{ template_name }}"
         datacenter: "{{ vcenter_datacenter_name }}"
         folder: "{{ vcenter_folder }}"
-        state: poweredon
+        state: "{{ new_vm_state }}"
         cluster: "{{ vcenter_cluster_name }}"
         wait_for_ip_address: yes

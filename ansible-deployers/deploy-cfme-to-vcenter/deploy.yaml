@@ -1,0 +1,58 @@
+---
+- name: Deploy CloudForms Management Engine to VMWare vCenter
+  hosts: localhost
+  connection: local
+
+  gather_facts: true
+  vars_files:
+    - defaults/main.yaml
+    - vars/vcenter_password.yaml
+    - vars/vcenter_vars.yaml
+
+  pre_tasks:
+    - name: Set up local environment
+      include_role:
+        name: ../roles/localVMWareSetup
+      tags:
+        - localVMWareSetup
+
+  tasks:
+    - name: Create local working directory
+      file:
+        path: "{{ ansibleWorkingDirectory }}/vmware-automation/cfme"
+        state: directory
+        mode: "0777"
+      become: yes
+
+    - name: Check for local OVA
+      stat:
+        path: "{{ ansibleWorkingDirectory }}/vmware-automation/cfme/cfme-vmware-appliance.ova"
+      register: local_ova
+
+    - name: Copy over local OVA into working directory
+      copy:
+        src: "{{ ovaPath }}"
+        dest: "{{ ansibleWorkingDirectory }}/vmware-automation/cfme/cfme-vmware-appliance.ova"
+      when: not local_ova.stat.exists and ovaLocation == 'filesystem'
+
+    - name: Download if the OVA is available via URL
+      get_url:
+        url: "{{ ovaPath }}"
+        dest: "{{ ansibleWorkingDirectory }}/vmware-automation/cfme/cfme-vmware-appliance.ova"
+      when: not local_ova.stat.exists and ovaLocation == 'url'
+
+    - name: Create VM in vCenter
+      vmware_deploy_ovf:
+        allow_duplicates: no
+        validate_certs: no
+        hostname: "{{ vcenter_server }}"
+        username: "{{ vcenter_username }}"
+        password: "{{ vcenter_password }}"
+        ovf: "{{ ansibleWorkingDirectory }}/vmware-automation/cfme/cfme-vmware-appliance.ova"
+        name: "{{ new_vm_name }}"
+        datacenter: "{{ vcenter_datacenter_name }}"
+        datastore: "{{ vcenter_datastore_name }}"
+        disk_provisioning: thin
+        power_on: "{{ new_vm_poweredon }}"
+        networks:
+          VM Network: "{{ vcenter_network_name }}"

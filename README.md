@@ -6,4 +6,6 @@ This repository is meant to house a collection of Ansible Playbooks, Bash script
   Deploy Red Hat Satellite entirely in an automated fashion.  Additional helper scripts and command references for additional functions such as custom Products, RHV/VMWare integration, and more.
 - **[Ansible][WIP]** Create VM from Template in VMWare vSphere
   Take an existing template from your VMWare environment and create a new VM from it
+- **[Ansible][Done-ish]** Deploy Red Hat CloudForms to VMWare vSphere
+  Take an existing OVA for CloudForms and deploy to vSphere
 - **[Ansible][WIP]** Create CentOS VM in Red Hat Virtualization

@@ -1,0 +1,12 @@
+---
+ansibleWorkingDirectory: "/opt/.ansible-generated"
+
+ovaLocation: filesystem
+ovaPath: files/cfme-vsphere-paravirtual-5.11.6.0-1.x86_64.vsphere.ova
+
+new_vm_name: RH-CloudFormsME
+new_vm_poweredon: yes
+
+vcenter_datacenter_name: Lab DC
+vcenter_datastore_name: VMDataStore
+vcenter_network_name: KL Network

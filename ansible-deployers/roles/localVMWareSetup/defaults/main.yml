@@ -1,0 +1,4 @@
+---
+ansibleWorkingDirectory: "/opt/.ansible-generated"
+
+vcenter_server: vcenter.example.com

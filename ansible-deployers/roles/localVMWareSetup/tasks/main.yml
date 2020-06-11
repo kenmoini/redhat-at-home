@@ -1,0 +1,71 @@
+---
+- name: Create local generated files directory
+  file:
+    path: "{{ ansibleWorkingDirectory }}/vmware-automation"
+    state: directory
+    mode: "0755"
+  become: yes
+
+- name: Download VMWare SSL File
+  get_url:
+    url: "https://{{ vcenter_server }}/certs/download.zip"
+    dest: "{{ ansibleWorkingDirectory }}/vmware-automation/cabundle.zip"
+    validate_certs: no
+  become: yes
+
+- name: Unpack CA file bundle
+  unarchive:
+    src: "{{ ansibleWorkingDirectory }}/vmware-automation/cabundle.zip"
+    dest: "{{ ansibleWorkingDirectory }}/vmware-automation/"
+  become: yes
+
+- name: Get list of files unpacked
+  find:
+    paths: "{{ ansibleWorkingDirectory }}/vmware-automation/certs/lin/"
+  register: linCerts
+
+- name: Move CA file to appropriate location
+  copy:
+    src: "{{ item.path }}"
+    dest: /etc/pki/ca-trust/source/anchors/
+  become: yes
+  with_items: "{{ linCerts.files }}"
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+
+- name: Move CA file to appropriate location
+  copy:
+    src: "{{ item.path }}"
+    dest: /etc/ssl/certs
+  become: yes
+  with_items: "{{ linCerts.files }}"
+  when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
+
+- name: Update local CA keystore
+  shell: update-ca-trust
+  become: yes
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'RedHat'
+
+- name: Update local CA keystore
+  shell: update-ca-certificates
+  become: yes
+  when: ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian'
+
+##- name: Update pip
+##  pip:
+##    name: pip
+##    state: latest
+##    executable: pip3
+##  become: yes
+##  ignore_errors: yes
+##  tags:
+##    - pip
+##    - upgradePip
+
+- name: Install VMWare Automation SDK via pip
+  pip:
+    name: git+https://github.com/vmware/vsphere-automation-sdk-python.git
+    state: latest
+    executable: pip3
+  #become: yes
+  tags:
+    - pip
