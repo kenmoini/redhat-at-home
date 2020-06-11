@@ -59,3 +59,12 @@ vcenter_datacenter_name: Lab DC
 vcenter_datastore_name: VMDataStore
 vcenter_network_name: KL Network
 ```
+
+## Post-deployment Instructions
+
+- You'll first be presented with Cockpit available on https://IP:9090 - navigate to that, use the Terminal (or SSH in) and setup your subscriptions (default credentials are root/smartvm)
+- Install VDDK on the appliance
+- Attach another 20GB hard disk to the appliance VM for the PGSQL DB (could be ansible-ized...)
+- Run `appliance_console` on the appliance
+- Configure a new database (option 5), make sure to press N on the last prompt...
+- Give it a few seconds and navigate to https://IP:443 and you'll be greeted with the CFME login page (default credentials are admin/smartvm)
