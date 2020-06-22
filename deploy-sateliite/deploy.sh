@@ -26,6 +26,14 @@ function promptCheckSubscription {
 echo -e "\n================================================================================"
 echo -e "Starting Satellite setup...\n"
 
+## Set Hostname...
+hostnamectl set-hostname $SATELLITE_HOSTNAME
+
+## Set interface to be static and autoconnect...
+if [ $ENABLE_DHCP = "true" ]; then
+  #nmcli con edit $DHCP_INTERFACE
+fi
+
 ## [DIY] Subscribe...
 promptCheckSubscription
 
