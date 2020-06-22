@@ -195,13 +195,18 @@ hammer product set-sync-plan \
 ## 6. Create satelliteLink user on RHVM - see file `/bash-scripts/create-rhv-user.sh`
 ## 7. Create new privateInternal (privint) Logical Network on RHVM - Compute > Data Center > Default > Logical Networks
 ## 8. Create Domain in Satellite - Infrastructure > Domain.  Associate to Org/Location
+#### hammer domain create --dns "${SATELLITE_HOSTNAME}.${SATELLITE_DOMAIN}" --name "${SATELLITE_DOMAIN}" --organization "$SATELLITE_INITIAL_ORGANIZATION" --location "${SATELLITE_INITIAL_LOCATION}"
 ## 9. Create Subnet in Satellite - https://access.redhat.com/documentation/en-us/red_hat_satellite/6.7/html/quick_start_guide/associating_objects_with_the_default_organization_and_location#configuring_subnet
 ## 10. Create Content View in Satellite - https://access.redhat.com/documentation/en-us/red_hat_satellite/6.7/html/quick_start_guide/managing_and_promoting_content#creating_content_view
+#### hammer content-view create --name RHEL7Base --label RHEL7Base --organization "$SATELLITE_INITIAL_ORGANIZATION"
 ## 11. Add Repos to Content View && Publish New Version of Content View, then Promote Content View to additional Lifecycle Environment Path Envs
-## 12. Create Activation Key in Satellite, generates:  rpm -Uvh http://satellite.kemo.labs/pub/katello-ca-consumer-latest.noarch.rpm && subscription-manager register --org="Kemo_Labs" --activationkey="kemoKey"
+#### hammer repository list --content-type yum --fields id | tail -n +4 | head -n -1 | while read line; do hammer content-view add-repository --organization "$SATELLITE_INITIAL_ORGANIZATION" --name RHEL7Base --repository-id ${line}; done
+#### hammer content-view publish --async --organization "$SATELLITE_INITIAL_ORGANIZATION" --name RHEL7Base
+## 12. Create Activation Key in Satellite, generates:  rpm -Uvh http://satellite.kemo.labs/pub/katello-ca-consumer-latest.noarch.rpm && subscription-manager register --org="Kemo_Labs" --activationkey="RHEL7AK"
+#### hammer activation-key create --organization "$SATELLITE_INITIAL_ORGANIZATION" --name RHEL7AK --unlimited-hosts --lifecycle-environment Library --content-view RHEL7Base
 ## 13. Skip...
 ## 14. Create a new RHEL VM in RHV - susbscribe to the Satellite Server, Install Clout-init, create Template in RHV from the VM
-## 15. Create a Product for the RH Container Catalog, add to Refd Hat Products sync plan, add Kemo Labs PV mirror too
+## 15. Create a Product for the RH Container Catalog, add to Red Hat Products sync plan, add Kemo Labs PV mirror too
 
 # hammer product create \
 # --name "Red Hat Container Catalog" \
