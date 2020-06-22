@@ -254,6 +254,14 @@ hammer product set-sync-plan \
 # --datacenter "Default"
 # 
 # ## 17. In RHV Create Instance Types (1C1G, 2C2G, etc)
+#### hammer compute-profile create --name 1C1G --location "$SATELLITE_INITIAL_LOCATION" --organization "$SATELLITE_INITIAL_ORGANIZATION"
+#### hammer compute-profile create --name 1C2G --location "$SATELLITE_INITIAL_LOCATION" --organization "$SATELLITE_INITIAL_ORGANIZATION"
+#### hammer compute-profile create --name 2C2G --location "$SATELLITE_INITIAL_LOCATION" --organization "$SATELLITE_INITIAL_ORGANIZATION"
+#### hammer compute-profile create --name 2C4G --location "$SATELLITE_INITIAL_LOCATION" --organization "$SATELLITE_INITIAL_ORGANIZATION"
+#### hammer compute-profile create --name 4C4G --location "$SATELLITE_INITIAL_LOCATION" --organization "$SATELLITE_INITIAL_ORGANIZATION"
+#### hammer compute-profile create --name 4C8G --location "$SATELLITE_INITIAL_LOCATION" --organization "$SATELLITE_INITIAL_ORGANIZATION"
+#### hammer compute-profile create --name 4C16G --location "$SATELLITE_INITIAL_LOCATION" --organization "$SATELLITE_INITIAL_ORGANIZATION"
+
 # ## 18. In Satellite create Compute Profiles that match the RHV Instance Types
 # ## 19. In Satellite create Host Groups for Dev/Prod/etc
 # ## 20. In Satellite - Infrastructure > Compute Resources > N > Images, create a new Image matching the Template in RHV
