@@ -29,36 +29,36 @@ echo -e "Starting Satellite setup...\n"
 ## [DIY] Subscribe...
 promptCheckSubscription
 
-## Set Repos needed for Satellite...
-subscription-manager repos --disable "*"
-subscription-manager repos --enable=rhel-7-server-rpms --enable=rhel-7-server-satellite-6.7-rpms --enable=rhel-7-server-satellite-maintenance-6-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-ansible-2.8-rpms --enable=rhel-7-server-rh-common-rpms
-
-## Disable Meltdown/Spectre patches to reclaim performance
-if [ $DISABLE_SPECTRE_PATCHES = "true" ]; then
-  grubby --update-kernel=ALL --args="spectre_v2=off nopti"
-fi
-
-## Install Packages
-yum clean all
-yum update -y
-yum install satellite nano ovirt-guest-agent-common chrony sos
-
-## Setup Firewall
-firewall-cmd --add-port="80/tcp" --add-port="443/tcp" --add-port="5647/tcp" --add-port="8000/tcp" --add-port="8140/tcp" --add-port="9090/tcp" --add-port="53/udp" --add-port="53/tcp" --add-port="67/udp" --add-port="69/udp" --add-port="5000/tcp"
-firewall-cmd --runtime-to-permanent
-
-## Set System Services
-systemctl start ovirt-guest-agent
-systemctl enable ovirt-guest-agent
-systemctl start qemu-guest-agent
-systemctl enable qemu-guest-agent
-systemctl start chronyd
-systemctl enable chronyd
-
 ## Reboot to load new kernel
 if [ -f "/opt/.init-complete" ]; then
-  echo "Already finished initial reboot..."
+  echo "Already finished initial setup and reboot..."
 else
+  ## Set Repos needed for Satellite...
+  subscription-manager repos --disable "*"
+  subscription-manager repos --enable=rhel-7-server-rpms --enable=rhel-7-server-satellite-6.7-rpms --enable=rhel-7-server-satellite-maintenance-6-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-ansible-2.8-rpms --enable=rhel-7-server-rh-common-rpms
+
+  ## Disable Meltdown/Spectre patches to reclaim performance
+  if [ $DISABLE_SPECTRE_PATCHES = "true" ]; then
+    grubby --update-kernel=ALL --args="spectre_v2=off nopti"
+  fi
+
+  ## Install Packages
+  yum clean all
+  yum update -y
+  yum install satellite nano ovirt-guest-agent-common chrony sos -y
+
+  ## Setup Firewall
+  firewall-cmd --add-port="80/tcp" --add-port="443/tcp" --add-port="5647/tcp" --add-port="8000/tcp" --add-port="8140/tcp" --add-port="9090/tcp" --add-port="53/udp" --add-port="53/tcp" --add-port="67/udp" --add-port="69/udp" --add-port="5000/tcp"
+  firewall-cmd --runtime-to-permanent
+
+  ## Set System Services
+  systemctl start ovirt-guest-agent
+  systemctl enable ovirt-guest-agent
+  systemctl start qemu-guest-agent
+  systemctl enable qemu-guest-agent
+  systemctl start chronyd
+  systemctl enable chronyd
+  
   touch /opt/.init-complete
   systemctl reboot
 fi
@@ -67,7 +67,6 @@ fi
 if [ -f "/opt/.satellite-init-complete" ]; then
   echo "Satellite already installed..."
 else
-  touch /opt/.satellite-init-complete
 
   satellite-installer --scenario satellite \
 --foreman-initial-admin-username $SATELLITE_ADMIN_USERNAME \
@@ -80,6 +79,7 @@ else
 --foreman-proxy-puppetca true \
 --enable-foreman-plugin-discovery \
 --enable-foreman-compute-ovirt \
+--enable-foreman-compute-vmware \
 --certs-node-fqdn "${SATELLITE_HOSTNAME}.${SATELLITE_DOMAIN}" \
 --foreman-proxy-content-parent-fqdn "${SATELLITE_HOSTNAME}.${SATELLITE_DOMAIN}" \
 --foreman-proxy-dhcp $ENABLE_DHCP \
@@ -102,6 +102,10 @@ else
 --foreman-proxy-httpboot $ENABLE_HTTPBOOT \
 --foreman-proxy-http $ENABLE_HTTPBOOT \
 --foreman-proxy-httpboot-listen-on "${HTTPBOOT_INTERFACE_LISTEN_ON}"
+
+
+  touch /opt/.satellite-init-complete
+  
 fi
 
 ## Next...
