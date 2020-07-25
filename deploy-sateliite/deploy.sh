@@ -31,7 +31,7 @@ hostnamectl set-hostname $SATELLITE_HOSTNAME
 
 ## Set interface to be static and autoconnect...
 if [ $ENABLE_DHCP = "true" ]; then
-  #nmcli con edit $DHCP_INTERFACE
+  nmcli con edit $ETH1_INTERFACE_NAME ipv4.method manual ipv4.addresses "$ETH1_IP_ADDRESS/$ETH1_CIDR_BLOCK" ipv4.gateway $ETH1_GATEWAY connection.autoconnect yes
 fi
 
 ## [DIY] Subscribe...
