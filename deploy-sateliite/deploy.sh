@@ -31,16 +31,20 @@ hostnamectl set-hostname $SATELLITE_HOSTNAME
 
 ## Set interface to be static and autoconnect...
 if [ $ENABLE_DHCP = "true" ]; then
-  nmcli con mod $ETH1_INTERFACE_NAME ipv4.method manual ipv4.addresses "$ETH1_IP_ADDRESS/$ETH1_CIDR_BLOCK" ipv4.gateway $ETH1_GATEWAY connection.autoconnect yes
+  if [ -f "/opt/.net-complete" ]; then
+    echo "Already finished network setup..."
+  else
+    nmcli con mod $ETH1_INTERFACE_NAME ipv4.method manual ipv4.addresses "$ETH1_IP_ADDRESS/$ETH1_CIDR_BLOCK" ipv4.gateway $ETH1_GATEWAY connection.autoconnect yes
+  fi
 fi
-
-## [DIY] Subscribe...
-promptCheckSubscription
 
 ## Reboot to load new kernel
 if [ -f "/opt/.init-complete" ]; then
   echo "Already finished initial setup and reboot..."
 else
+  ## [DIY] Subscribe...
+  promptCheckSubscription
+  
   ## Set Repos needed for Satellite...
   subscription-manager repos --disable "*"
   subscription-manager repos --enable=rhel-7-server-rpms --enable=rhel-7-server-satellite-6.7-rpms --enable=rhel-7-server-satellite-maintenance-6-rpms --enable=rhel-server-rhscl-7-rpms --enable=rhel-7-server-ansible-2.8-rpms --enable=rhel-7-server-rh-common-rpms
@@ -139,58 +143,61 @@ if [ $INSTALL_INSIGHTS_CLIENT = "true" ]; then
   insights-client --register
 fi
 
-## 4. Enable Satellite Tools repo on Satellite Server (where virt-who is running) and sync the repo down - also enable other repos for RHEL
-hammer repository-set enable --organization "$SATELLITE_INITIAL_ORGANIZATION" \
---product 'Red Hat Enterprise Linux Server' \
---basearch='x86_64' \
---releasever='7Server' \
---name 'Red Hat Satellite Tools 6.7 (for RHEL 7 Server) (RPMs)'
+## Prepopulate Satelite
+if [ $PREPOPULATE_SATELLITE = "true" ]; then
 
-hammer repository synchronize --organization "$SATELLITE_INITIAL_ORGANIZATION" \
---product 'Red Hat Enterprise Linux Server' \
---name 'Red Hat Satellite Tools 6.7 for RHEL 7 Server RPMs x86_64 7Server' \
---async
+  ## 4. Enable Satellite Tools repo on Satellite Server (where virt-who is running) and sync the repo down - also enable other repos for RHEL
+  hammer repository-set enable --organization "$SATELLITE_INITIAL_ORGANIZATION" \
+  --product 'Red Hat Enterprise Linux Server' \
+  --basearch='x86_64' \
+  --releasever='7Server' \
+  --name 'Red Hat Satellite Tools 6.7 (for RHEL 7 Server) (RPMs)'
 
-hammer repository-set enable --organization "$SATELLITE_INITIAL_ORGANIZATION" --product 'Red Hat Enterprise Linux Server' --releasever='7Server' --basearch='x86_64' --name 'Red Hat Virt V2V Tool for RHEL 7 (RPMs)'
-hammer repository-set enable --organization "$SATELLITE_INITIAL_ORGANIZATION" --product 'Red Hat Enterprise Linux Server' --releasever='7Server' --basearch='x86_64' --name 'Red Hat Insights 3 (for RHEL 7 Server) (RPMs)'
-hammer repository-set enable --organization "$SATELLITE_INITIAL_ORGANIZATION" --product 'Red Hat Enterprise Linux Server' --releasever='7Server' --basearch='x86_64' --name 'Red Hat Enterprise Linux 7 Server - Supplementary (RPMs)'
-hammer repository-set enable --organization "$SATELLITE_INITIAL_ORGANIZATION" --product 'Red Hat Enterprise Linux Server' --releasever='7Server' --basearch='x86_64' --name 'Red Hat Enterprise Linux 7 Server (RPMs)'
-hammer repository-set enable --organization "$SATELLITE_INITIAL_ORGANIZATION" --product 'Red Hat Enterprise Linux Server' --releasever='7Server' --basearch='x86_64' --name 'Red Hat Enterprise Linux 7 Server - RH Common (RPMs)'
-hammer repository-set enable --organization "$SATELLITE_INITIAL_ORGANIZATION" --product 'Red Hat Enterprise Linux Server' --releasever='7Server' --basearch='x86_64' --name 'Red Hat Enterprise Linux 7 Server - Optional (RPMs)'
-hammer repository-set enable --organization "$SATELLITE_INITIAL_ORGANIZATION" --product 'Red Hat Enterprise Linux Server' --releasever='7Server' --basearch='x86_64' --name 'Red Hat Enterprise Linux 7 Server - Extras (RPMs)'
-hammer repository-set enable --organization "$SATELLITE_INITIAL_ORGANIZATION" --product 'Red Hat Enterprise Linux Server' --releasever='7Server' --basearch='x86_64' --name 'RHN Tools for Red Hat Enterprise Linux 7 Server (RPMs)'
-hammer repository-set enable --organization "$SATELLITE_INITIAL_ORGANIZATION" --product 'Red Hat Enterprise Linux Server' --releasever='7Server' --basearch='x86_64' --name 'Red Hat Enterprise Linux 7 Server (Kickstart)'
+  hammer repository synchronize --organization "$SATELLITE_INITIAL_ORGANIZATION" \
+  --product 'Red Hat Enterprise Linux Server' \
+  --name 'Red Hat Satellite Tools 6.7 for RHEL 7 Server RPMs x86_64 7Server' \
+  --async
 
-## Sync all the rest with...
-hammer product synchronize \
---name "Red Hat Enterprise Linux Server" \
---organization "$SATELLITE_INITIAL_ORGANIZATION" \
---async
+  hammer repository-set enable --organization "$SATELLITE_INITIAL_ORGANIZATION" --product 'Red Hat Enterprise Linux Server' --releasever='7Server' --basearch='x86_64' --name 'Red Hat Virt V2V Tool for RHEL 7 (RPMs)'
+  hammer repository-set enable --organization "$SATELLITE_INITIAL_ORGANIZATION" --product 'Red Hat Enterprise Linux Server' --releasever='7Server' --basearch='x86_64' --name 'Red Hat Insights 3 (for RHEL 7 Server) (RPMs)'
+  hammer repository-set enable --organization "$SATELLITE_INITIAL_ORGANIZATION" --product 'Red Hat Enterprise Linux Server' --releasever='7Server' --basearch='x86_64' --name 'Red Hat Enterprise Linux 7 Server - Supplementary (RPMs)'
+  hammer repository-set enable --organization "$SATELLITE_INITIAL_ORGANIZATION" --product 'Red Hat Enterprise Linux Server' --releasever='7Server' --basearch='x86_64' --name 'Red Hat Enterprise Linux 7 Server (RPMs)'
+  hammer repository-set enable --organization "$SATELLITE_INITIAL_ORGANIZATION" --product 'Red Hat Enterprise Linux Server' --releasever='7Server' --basearch='x86_64' --name 'Red Hat Enterprise Linux 7 Server - RH Common (RPMs)'
+  hammer repository-set enable --organization "$SATELLITE_INITIAL_ORGANIZATION" --product 'Red Hat Enterprise Linux Server' --releasever='7Server' --basearch='x86_64' --name 'Red Hat Enterprise Linux 7 Server - Optional (RPMs)'
+  hammer repository-set enable --organization "$SATELLITE_INITIAL_ORGANIZATION" --product 'Red Hat Enterprise Linux Server' --releasever='7Server' --basearch='x86_64' --name 'Red Hat Enterprise Linux 7 Server - Extras (RPMs)'
+  hammer repository-set enable --organization "$SATELLITE_INITIAL_ORGANIZATION" --product 'Red Hat Enterprise Linux Server' --releasever='7Server' --basearch='x86_64' --name 'RHN Tools for Red Hat Enterprise Linux 7 Server (RPMs)'
+  hammer repository-set enable --organization "$SATELLITE_INITIAL_ORGANIZATION" --product 'Red Hat Enterprise Linux Server' --releasever='7Server' --basearch='x86_64' --name 'Red Hat Enterprise Linux 7 Server (Kickstart)'
 
-## Create a syncronizuation plan...
-hammer sync-plan create \
---name "Red Hat Products" \
---description "Example Sync Plan for Red Hat Products" \
---interval daily \
---sync-date "2020-05-18 12:00:00" \
---enabled true \
---organization "$SATELLITE_INITIAL_ORGANIZATION"
+  ## Sync all the rest with...
+  hammer product synchronize \
+  --name "Red Hat Enterprise Linux Server" \
+  --organization "$SATELLITE_INITIAL_ORGANIZATION" \
+  --async
 
-hammer product set-sync-plan \
---name "Red Hat Enterprise Linux Server" \
---sync-plan "Red Hat Products" \
---organization "$SATELLITE_INITIAL_ORGANIZATION"
+  ## Create a syncronizuation plan...
+  hammer sync-plan create \
+  --name "Red Hat Products" \
+  --description "Example Sync Plan for Red Hat Products" \
+  --interval daily \
+  --sync-date "2020-05-18 12:00:00" \
+  --enabled true \
+  --organization "$SATELLITE_INITIAL_ORGANIZATION"
 
-## EXAMPLE
-## For Custom Products...
-#### hammer sync-plan create \
-#### --name "Kemo Labs Projects" \
-#### --description "Sync Plan for stuff brewed out of Kemo Labs" \
-#### --interval daily \
-#### --sync-date "2020-05-18 12:00:00" \
-#### --enabled true \
-#### --organization "$SATELLITE_INITIAL_ORGANIZATION"
+  hammer product set-sync-plan \
+  --name "Red Hat Enterprise Linux Server" \
+  --sync-plan "Red Hat Products" \
+  --organization "$SATELLITE_INITIAL_ORGANIZATION"
 
+  ## EXAMPLE
+  ## For Custom Products...
+  #### hammer sync-plan create \
+  #### --name "Kemo Labs Projects" \
+  #### --description "Sync Plan for stuff brewed out of Kemo Labs" \
+  #### --interval daily \
+  #### --sync-date "2020-05-18 12:00:00" \
+  #### --enabled true \
+  #### --organization "$SATELLITE_INITIAL_ORGANIZATION"
+fi
 ## 5. Deploy Virt-who on Satellite server to connect to RHV (via GUI)
 ## 6. Create satelliteLink user on RHVM - see file `/bash-scripts/create-rhv-user.sh`
 ## 7. Create new privateInternal (privint) Logical Network on RHVM - Compute > Data Center > Default > Logical Networks
