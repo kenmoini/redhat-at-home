@@ -35,6 +35,7 @@ if [ $ENABLE_DHCP = "true" ]; then
     echo "Already finished network setup..."
   else
     nmcli con mod $ETH1_INTERFACE_NAME ipv4.method manual ipv4.addresses "$ETH1_IP_ADDRESS/$ETH1_CIDR_BLOCK" ipv4.gateway $ETH1_GATEWAY connection.autoconnect yes
+    touch /opt/.net-complete
   fi
 fi
 
