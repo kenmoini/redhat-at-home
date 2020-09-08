@@ -1,0 +1,65 @@
+---
+# tasks file for nfs-server
+
+- name: Update System
+  yum:
+    name: "*"
+    update_cache: yes
+    state: latest
+  when: update_system_packages|bool
+  register: yum_update
+
+- name: Restart System if new packages are installed
+  reboot:
+    reboot_timeout: 3600
+  when: yum_update.changed and restart_after_update|bool
+
+- name: Install NFS Server Packages
+  yum:
+    name: "{{ nfs_server_package_list }}"
+    state: latest
+
+- name: Start RPC-Bind service
+  service:
+    name: rpcbind
+    state: started
+    enabled: yes
+
+- name: Start NFS service
+  service:
+    name: nfs-server
+    state: started
+    enabled: yes
+
+- name: Configure FirewallD
+  firewalld:
+    service: "{{ item }}"
+    state: enabled
+    permanent: yes
+  with_items: "{{ firewall_service_configuration }}"
+
+- name: Create Export Paths
+  file:
+    path: "{{ base_nfs_export_path }}{{ item.path }}"
+    state: directory
+    mode: "{{ item.mode }}"
+    owner: "{{ item.owner }}"
+    group: "{{ item.group }}"
+    recurse: yes
+  with_items: "{{ nfs_exports }}"
+
+- name: Template out export definition files
+  lineinfile:
+    path: "/etc/exports.d/{{ item.path }}"
+    line: "{{ base_nfs_export_path }}{{ item.path }} {{ network_address }}{{ mount_options }}"
+    create: yes
+  with_items: "{{ nfs_exports }}"
+
+- name: Restart NFS to load new exports
+  service:
+    name: nfs-server
+    state: restarted
+    enabled: yes
+
+- name: Run exportfs to immediately export paths
+  shell: exportfs -arv

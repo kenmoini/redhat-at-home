@@ -1,0 +1,17 @@
+---
+# defaults file for nfs-server
+
+nfs_server_package_list:
+  - nfs-utils
+  - rpcbind
+  - firewalld
+
+firewall_service_configuration:
+  - nfs
+  - rpc-bind
+  - mountd
+
+mount_options: "(rw,sync,no_all_squash,root_squash)"
+
+update_system_packages: true
+restart_after_update: true

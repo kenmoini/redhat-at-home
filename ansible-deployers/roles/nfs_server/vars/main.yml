@@ -1,0 +1,27 @@
+---
+# vars file for nfs-server
+
+# Don't forget the trailing slash!
+base_nfs_export_path: /mnt/nfs_exports/
+
+nfs_exports:
+  - name: rhv-manager
+    path: rhv-manager
+    group: nobody
+    owner: nobody
+    mode: 0777
+    network_address: 192.168.0.0/16
+
+  - name: rhv-vms
+    path: rhv-vms
+    group: nobody
+    owner: nobody
+    mode: 0777
+    network_address: 192.168.0.0/16
+
+  - name: isos
+    path: isos
+    group: nobody
+    owner: nobody
+    mode: 0777
+    network_address: 192.168.0.0/16
