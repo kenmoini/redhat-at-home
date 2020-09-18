@@ -8,18 +8,18 @@
       include_vars: vars/main.yaml
 
     - name: System Updater
-      include_task: tasks/update_system.yaml
+      include_tasks: tasks/update_system.yaml
       when: update_system_packages|bool
 
     - name: Install base packages
-      include_task: tasks/install_base_packages.yaml
+      include_tasks: tasks/install_base_packages.yaml
 
     - name: Set up Firewalld
-      include_task: tasks/setup_firewalld.yaml
+      include_tasks: tasks/setup_firewalld.yaml
 
     - name: Set up dnsmasq
-      include_task: tasks/setup_dnsmasq.yaml
+      include_tasks: tasks/setup_dnsmasq.yaml
 
     - name: Set up Cockpit
-      include_task: tasks/setup_cockpit.yaml
+      include_tasks: tasks/setup_cockpit.yaml
       when: setup_cockpit|bool
