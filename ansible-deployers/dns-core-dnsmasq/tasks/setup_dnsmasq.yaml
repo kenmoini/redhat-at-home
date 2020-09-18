@@ -4,3 +4,37 @@
     name: dnsmasq
     state: started
     enabled: yes
+
+- name: Create dnsmasq-hosts file
+  file:
+    path: /etc/dnsmasq-hosts
+    state: touch
+    owner: dnsmasq
+    group: dnsmasq
+  when: additional_hosts_file|bool
+
+- name: Template over dnsmasq config
+  template:
+    src: dnsmasq-dns-server.conf.j2
+    dest: /etc/dnsmasq.d/dns-server.conf
+    owner: dnsmasq
+    group: dnsmasq
+  notify: restart dnsmasq
+
+- name: Template over zone files
+  blockinfile:
+    create: yes
+    path: "/etc/dnsmasq.d/{{ item.name }}.zone.conf"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK for {{ item.name }}"
+    block: "domain={{ item.name }},{{ item.subnet }}"
+  loop: "{{ expanded_domains }}"
+  notify: restart dnsmasq
+
+- name: Setup basic A records in dnsmasq-hosts
+  blockinfile:
+    path: /etc/dnsmasq-hosts
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
+    block: "{{ item.value }} {{ item.domain }}.{{ item.zone }}"
+  loop: "{{ a_records }}"
+  notify: restart dnsmasq
+  when: additional_hosts_file|bool

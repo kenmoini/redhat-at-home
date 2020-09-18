@@ -4,6 +4,9 @@
   become: yes
 
   tasks:
+    - name: Include Default variables
+      include_vars: defaults/main.yaml
+
     - name: Include Global variables
       include_vars: vars/main.yaml
 
@@ -23,3 +26,9 @@
     - name: Set up Cockpit
       include_tasks: tasks/setup_cockpit.yaml
       when: setup_cockpit|bool
+
+  handlers:
+    - name: restart dnsmasq
+      service:
+        name: dnsmasq
+        state: restarted

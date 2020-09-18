@@ -1,0 +1,112 @@
+---
+expand_hosts: true
+expanded_domains:
+  - name: kemo.labs
+    subnet: 192.168.42.0/24
+
+  - name: wireless.kemo.labs
+    subnet: 192.168.40.0/24
+
+  - name: guests.kemo.labs
+    subnet: 192.168.38.0/24
+
+  - name: internet.of.shit.kemo.labs
+    subnet: 192.168.36.0/24
+
+  - name: san.kemo.labs
+    subnet: 192.168.44.0/24
+
+  - name: mgmt.kemo.labs
+    subnet: 192.168.46.0/24
+
+## This will configure the system /etc/dnsmasq-hosts file
+a_records:
+  - zone: kemo.labs
+    domain: unifi
+    value: 192.168.42.1
+
+  - zone: kemo.labs
+    domain: dns-core
+    value: 192.168.42.2
+
+  - zone: kemo.labs
+    domain: freeipa
+    value: 192.168.42.3
+
+  - zone: kemo.labs
+    domain: freeipa-ca
+    value: 192.168.42.3
+
+  - zone: kemo.labs
+    domain: dns-pihole
+    value: 192.168.42.4
+
+  - zone: kemo.labs
+    domain: thebus
+    value: 192.168.42.30
+
+  - zone: kemo.labs
+    domain: vcenter
+    value: 192.168.42.60
+
+  - zone: mgmt.kemo.labs
+    domain: thebus
+    value: 192.168.46.30
+
+srv_records:
+  - zone: kemo.labs
+    record: _kerberos._udp
+    value: freeipa.kemo.labs
+    port: 88
+    priority: 1
+  - zone: kemo.labs
+    record: _kerberos._tcp
+    value: freeipa.kemo.labs
+    port: 88
+    priority: 1
+
+  - zone: kemo.labs
+    record: _kerberos-master._udp
+    value: freeipa.kemo.labs
+    port: 88
+    priority: 1
+  - zone: kemo.labs
+    record: _kerberos-master._tcp
+    value: freeipa.kemo.labs
+    port: 88
+    priority: 1
+
+  - zone: kemo.labs
+    record: _kpasswd._udp
+    value: freeipa.kemo.labs
+    port: 464
+    priority: 1
+  - zone: kemo.labs
+    record: _kpasswd._tcp
+    value: freeipa.kemo.labs
+    port: 464
+    priority: 1
+
+  - zone: kemo.labs
+    record: _ldap._tcp
+    value: freeipa.kemo.labs
+    port: 389
+    priority: 1
+  - zone: kemo.labs
+    record: _ldaps._tcp
+    value: freeipa.kemo.labs
+    port: 636
+    priority: 1
+
+  - zone: kemo.labs
+    record: _ntp._udp
+    value: freeipa.kemo.labs
+    port: 123
+    priority: 1
+
+txt_records:
+  - zone: kemo.labs
+    record: _kerberos
+    value: "KEMO.LABS"
+
+ptr_records:

@@ -1,0 +1,8 @@
+---
+dns_port: 53
+
+domain_needed: false
+bogus_priv: false
+
+additional_hosts_file: true
+additional_hosts_file_path: /etc/dnsmasq-hosts

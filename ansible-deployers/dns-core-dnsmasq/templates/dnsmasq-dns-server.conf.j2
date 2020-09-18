@@ -1,0 +1,14 @@
+port={{ dns_port }}
+
+{% if domain_needed|bool %}
+domain-needed
+{% endif %}
+{% if bogus_priv|bool %}
+bogus-priv
+{% endif %}
+{% if expand_hosts|bool %}
+expand-hosts
+{% endif %}
+{% if additional_hosts_file|bool %}
+addn-hosts={{ additional_hosts_file_path }}
+{% endif %}
