@@ -33,7 +33,7 @@
 - name: Setup basic A records in dnsmasq-hosts
   blockinfile:
     path: /etc/dnsmasq-hosts
-    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.name }}"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK {{ item.domain }}"
     block: "{{ item.value }} {{ item.domain }}.{{ item.zone }}"
   loop: "{{ a_records }}"
   notify: restart dnsmasq
