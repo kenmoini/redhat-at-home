@@ -1,6 +1,7 @@
 ---
 - name: Configure CentOS/RHEL System as DNS Core Server with dnsmasq
-  hosts: all
+  hosts: dns_servers
+  become: yes
 
   tasks:
     - name: Include Global variables
