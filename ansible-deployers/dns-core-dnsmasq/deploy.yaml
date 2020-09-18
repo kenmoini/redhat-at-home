@@ -10,6 +10,9 @@
     - name: Include Global variables
       include_vars: vars/main.yaml
 
+    - name: Include DNS Config variables
+      include_vars: vars/dns_config.yaml
+
     - name: System Updater
       include_tasks: tasks/update_system.yaml
       when: update_system_packages|bool
