@@ -1,0 +1,27 @@
+---
+base_packages:
+  - dnsmasq
+  - dnsmasq-utils
+  - whois
+  - bind-utils
+  - nano
+  - wget
+  - firewalld
+
+setup_cockpit: true
+
+cockpit_packages:
+  - cockpit
+  - cockpit-bridge
+  - cockpit-dashboard
+  - cockpit-packagekit
+  - cockpit-pcp
+  - cockpit-system
+  - cockpit-ws
+
+update_system_packages: true
+reboot_after_kernel_update: true
+
+firewalld_services:
+  - ssh
+  - dns

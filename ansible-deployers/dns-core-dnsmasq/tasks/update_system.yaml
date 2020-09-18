@@ -1,0 +1,11 @@
+---
+- name: Update system
+  yum:
+    name: "*"
+    state: latest
+  register: yum_updates
+
+- name: Reboot if needed
+  reboot:
+    reboot_timeout: 3600
+  when: yum_updates.changes.updated|flatten|select('regex', '^kernel$') is any and reboot_after_kernel_update|bool

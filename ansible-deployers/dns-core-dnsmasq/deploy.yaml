@@ -1,0 +1,24 @@
+---
+- name: Configure CentOS/RHEL System as DNS Core Server with dnsmasq
+  hosts: all
+
+  tasks:
+    - name: Include Global variables
+      include_vars: vars/main.yaml
+
+    - name: System Updater
+      include_task: tasks/update_system.yaml
+      when: update_system_packages|bool
+
+    - name: Install base packages
+      include_task: tasks/install_base_packages.yaml
+
+    - name: Set up Firewalld
+      include_task: tasks/setup_firewalld.yaml
+
+    - name: Set up dnsmasq
+      include_task: tasks/setup_dnsmasq.yaml
+
+    - name: Set up Cockpit
+      include_task: tasks/setup_cockpit.yaml
+      when: setup_cockpit|bool
