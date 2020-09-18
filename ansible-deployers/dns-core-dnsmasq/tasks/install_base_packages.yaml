@@ -1,6 +1,5 @@
 ---
 - name: Install base packages
   yum:
-    name: "{{ item }}"
+    name: "{{ base_packages }}"
     state: latest
-  with_items: base_packages
