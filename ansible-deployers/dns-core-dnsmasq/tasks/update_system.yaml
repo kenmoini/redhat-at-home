@@ -10,8 +10,6 @@
   shell: LAST_KERNEL=$(rpm -q --last kernel | awk 'NR==1{sub(/kernel-/,""); print $1}'); CURRENT_KERNEL=$(uname -r); if [ $LAST_KERNEL != $CURRENT_KERNEL ]; then echo 'reboot'; else echo 'no'; fi # noqa 204 306
   changed_when: false
   register: yum_reboot_hint_result
-  tags:
-    - skip_ansible_lint
 
 - name: set_fact for reboot
   set_fact:
