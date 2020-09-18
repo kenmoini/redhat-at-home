@@ -1,9 +1,8 @@
 ---
 - name: Install Cockpit packages
   yum:
-    name: "{{ item }}"
+    name: "{{ cockpit_packages }}"
     state: latest
-  with_items: "{{ cockpit_packages }}"
 
 - name: Enable Cockpit Socket
   service:

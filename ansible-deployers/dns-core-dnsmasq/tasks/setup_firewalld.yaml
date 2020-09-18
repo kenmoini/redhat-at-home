@@ -10,7 +10,7 @@
     service: "{{ item }}"
     state: enabled
     permanent: yes
-  with_item: "{{ firewalld_services }}"
+  with_items: "{{ firewalld_services }}"
 
 - name: Reload firewalld
   shell: firewall-cmd --reload
