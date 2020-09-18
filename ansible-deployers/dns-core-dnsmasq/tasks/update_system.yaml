@@ -3,9 +3,27 @@
   yum:
     name: "*"
     state: latest
+    update_cache: yes
   register: yum_updates
+
+- name: server update reboot | Check if reboot is needed because kernel was upgraded
+  shell: LAST_KERNEL=$(rpm -q --last kernel | awk 'NR==1{sub(/kernel-/,""); print $1}'); CURRENT_KERNEL=$(uname -r); if [ $LAST_KERNEL != $CURRENT_KERNEL ]; then echo 'reboot'; else echo 'no'; fi # noqa 204 306
+  changed_when: false
+  register: yum_reboot_hint_result
+  tags:
+    - skip_ansible_lint
+
+- name: set_fact for reboot
+  set_fact:
+    reboot_hint_result: false
+  when: yum_reboot_hint_result.stdout.find("no") != -1
+
+- name: set_fact for reboot
+  set_fact:
+    reboot_hint_result: true
+  when: yum_reboot_hint_result.stdout.find("reboot") != -1
 
 - name: Reboot if needed
   reboot:
     reboot_timeout: 3600
-  when: yum_updates.changes.updated|flatten|select('regex', '^kernel$') is any and reboot_after_kernel_update|bool
+  when: reboot_hint_result|bool and reboot_after_kernel_update|bool
