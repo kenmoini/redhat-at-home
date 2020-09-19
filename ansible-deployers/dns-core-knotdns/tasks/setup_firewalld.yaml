@@ -11,6 +11,4 @@
     state: enabled
     permanent: yes
   with_items: "{{ firewalld_services }}"
-
-- name: Reload firewalld
-  shell: firewall-cmd --reload
+  notify: reload firewalld
