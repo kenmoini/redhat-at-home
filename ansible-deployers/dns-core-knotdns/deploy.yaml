@@ -1,0 +1,49 @@
+---
+- name: Configure CentOS/RHEL System as DNS Core Server with KnotDNS and Knot Resolver
+  hosts: dns_servers
+  become: yes
+  gather_facts: yes
+
+  tasks:
+    - name: Include Default variables
+      include_vars: defaults/main.yaml
+
+    - name: Include Global variables
+      include_vars: vars/main.yaml
+
+    - name: Include DNS Config variables
+      include_vars: vars/dns_config.yaml
+
+    - name: Debug inventory_hostname
+      debug:
+        msg: "{{ inventory_hostname }}"
+
+    - name: Debug ansible_hostname
+      debug:
+        msg: "{{ ansible_hostname }}"
+#    - name: System Updater
+#      include_tasks: tasks/update_system.yaml
+#      when: update_system_packages|bool
+#
+#    - name: Install base packages
+#      include_tasks: tasks/install_base_packages.yaml
+#
+#    - name: Set up Firewalld
+#      include_tasks: tasks/setup_firewalld.yaml
+#
+#    - name: Set up Cockpit
+#      include_tasks: tasks/setup_cockpit.yaml
+#      when: setup_cockpit|bool
+#
+#    - name: Set up Knot DNS
+#      include_tasks: tasks/setup_knot_dns.yaml
+#
+#    - name: Set up Knot Resolver
+#      include_tasks: tasks/setup_knot_resolver.yaml
+#
+#  handlers:
+#    - name: restart knot dns
+#      service:
+#        name: dnsmasq
+#        state: restarted
+#

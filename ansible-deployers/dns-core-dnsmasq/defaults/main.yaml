@@ -1,5 +1,6 @@
 ---
 dns_port: 53
+upstream_dns_server: 1.1.1.1
 
 domain_needed: false
 bogus_priv: false

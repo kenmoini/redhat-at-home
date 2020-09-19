@@ -1,0 +1,16 @@
+---
+- name: Enable Firewalld
+  service:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: Enable Services on Firewalld
+  firewalld:
+    service: "{{ item }}"
+    state: enabled
+    permanent: yes
+  with_items: "{{ firewalld_services }}"
+
+- name: Reload firewalld
+  shell: firewall-cmd --reload

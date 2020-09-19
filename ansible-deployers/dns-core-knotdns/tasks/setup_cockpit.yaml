@@ -1,0 +1,17 @@
+---
+- name: Install Cockpit packages
+  yum:
+    name: "{{ cockpit_packages }}"
+    state: latest
+
+- name: Enable Cockpit Socket
+  service:
+    name: cockpit.socket
+    state: started
+    enabled: yes
+
+- name: Enable Cockpit on Firewalld
+  firewalld:
+    service: cockpit
+    state: enabled
+    permanent: yes
