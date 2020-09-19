@@ -16,7 +16,7 @@
 
     - name: Debug ansible_set_hostname
       debug:
-        msg: "{{ hostvars['inventory_hostname']['ansible_set_hostname'] }}"
+        msg: "{{ hostvars[inventory_hostname]['ansible_set_hostname'] }}"
 
     - name: Debug ansible_hostname
       debug:
