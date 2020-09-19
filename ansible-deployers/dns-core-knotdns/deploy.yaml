@@ -30,12 +30,12 @@
     - name: Set up Cockpit
       include_tasks: tasks/setup_cockpit.yaml
       when: setup_cockpit|bool
-#    - name: Set up Knot DNS
-#      include_tasks: tasks/setup_knot_dns.yaml
-#
-#    - name: Set up Knot Resolver
-#      include_tasks: tasks/setup_knot_resolver.yaml
-#
+
+    - name: Set up Knot DNS
+      include_tasks: tasks/setup_knot_dns.yaml
+
+    - name: Set up Knot Resolver
+      include_tasks: tasks/setup_knot_resolver.yaml
 #  handlers:
 #    - name: restart knot dns
 #      service:
