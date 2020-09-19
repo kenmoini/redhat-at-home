@@ -14,9 +14,9 @@
     - name: Include DNS Config variables
       include_vars: vars/dns_config.yaml
 
-    - name: Debug inventory_hostname
+    - name: Debug ansible_set_hostname
       debug:
-        msg: "{{ inventory_hostname }}"
+        msg: "{{ hostvars['inventory_hostname']['ansible_set_hostname'] }}"
 
     - name: Debug ansible_hostname
       debug:
