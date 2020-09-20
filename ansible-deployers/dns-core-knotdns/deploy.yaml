@@ -41,7 +41,9 @@
 
   handlers:
     - name: reload firewalld
-      shell: firewall-cmd --reload
+      service:
+        name: firewalld
+        state: restarted
 
     - name: restart knot dns
       service:
