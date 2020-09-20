@@ -7,7 +7,7 @@
 
 - name: Install Knot DNS
   yum:
-    name: knot
+    name: ["knot", "knot-utils"]
     state: latest
     update_cache: yes
 

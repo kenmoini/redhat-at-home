@@ -6,6 +6,13 @@ dns_systems:
   - dns-core-1
   - dns-core-2
 
+knot_auth_dns_forward_resolver_fallback: true
+knot_auth_dns_forward_resolver_fallback_servers:
+  - remote_name: pihole
+    dnsproxy_id: default
+    address: 192.168.42.4
+    port: 53
+
 default_zone_soa_params:
   refresh: 6h
   retry: 1h

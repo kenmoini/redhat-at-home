@@ -33,9 +33,11 @@
 
     - name: Set up Knot Authoritative DNS
       include_tasks: tasks/setup_knot_dns.yaml
+      when: knot_auth_dns|bool
 
-  #    - name: Set up Knot Resolver
-  #      include_tasks: tasks/setup_knot_resolver.yaml
+    - name: Set up Knot Resolver
+      include_tasks: tasks/setup_knot_resolver.yaml
+      when: knot_resolving_dns|bool
 
   handlers:
     - name: reload firewalld

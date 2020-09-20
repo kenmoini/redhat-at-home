@@ -17,6 +17,25 @@ template:
 {% if dns_server_designation == "primary" %}
 # Primary DNS Server Configuration
 
+{% if dns_systems|length > 1 or knot_auth_dns_forward_resolver_fallback|bool or knot_resolving_dns|bool %}
+remote:
+{% if knot_auth_dns_forward_resolver_fallback|bool %}
+{% for server in knot_auth_dns_forward_resolver_fallback_servers %}
+  - id: {{ server.remote_name }}
+    address: {{ server.address }}@{{ server.port }}
+{% endfor %}
+{% endif %}
+{% endif %}
+
+{% if knot_auth_dns_forward_resolver_fallback|bool %}
+mod-dnsproxy:
+{% for server in knot_auth_dns_forward_resolver_fallback_servers %}
+  - id: {{ server.dnsproxy_id }}
+    remote: {{ server.remote_name }}
+    fallback: on
+{% endfor %}
+{% endif %}
+
 acl:
   - id: acl_update
     address: {{ knot_auth_dns_acl_update_allow_cidr }}
