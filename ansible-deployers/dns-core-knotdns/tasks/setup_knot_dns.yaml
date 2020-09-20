@@ -62,3 +62,16 @@
   loop: "{{ zones }}"
   notify: restart knot dns
   when: dns_systems[0]['name'] == hostvars[inventory_hostname]['ansible_set_hostname']
+
+- name: Template over Knot DNS Configuration to Replica DNS Server
+  template:
+    src: knot_dns.conf.j2
+    dest: /etc/knot/knot.conf
+    backup: yes
+    group: "{{ knot_group }}"
+    owner: "{{ knot_user }}"
+  notify: restart knot dns
+  vars:
+    dns_server_designation: replica
+  #when: inventory_hostname == groups['dns_servers'][0]
+  when: dns_systems[0]['name'] != hostvars[inventory_hostname]['ansible_set_hostname']
