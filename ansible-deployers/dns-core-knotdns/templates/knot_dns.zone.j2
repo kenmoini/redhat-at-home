@@ -1,0 +1,37 @@
+$ORIGIN {{ item.name }}.
+$TTL {{ item.ttl }}
+
+@	SOA	{{ dns_systems[0] }}.{{ system_domain }}. hostmaster.{{ system_domain }}. (
+		{{ ansible_date_time.epoch }}
+		{{ default_zone_soa_params.refresh }}
+		{{ default_zone_soa_params.retry }}
+		{{ default_zone_soa_params.expire }}
+		{{ default_zone_soa_params.min_ttl }} )
+
+{% for NSRecord in item.records.NS %}
+  {{ NSRecord.ttl }} NS {{ NSRecord.name }}.{{ NSRecord.domain }}.
+{% endfor %}
+
+{% for ARecord in item.records.A %}
+{% if ARecord.name != '@' %}
+{{ ARecord.name }} {{ ARecord.ttl }} A {{ ARecord.value }}
+{% else %}
+  {{ ARecord.ttl }} A {{ ARecord.value }}
+{% endif %}
+{% endfor %}
+
+{% for AAAARecord in item.records.AAAA %}
+{% if AAAARecord.name != '@' %}
+{{ AAAARecord.name }} {{ AAAARecord.ttl }} AAAA {{ AAAARecord.value }}
+{% else %}
+  {{ AAAARecord.ttl }} AAAA {{ AAAARecord.value }}
+{% endif %}
+{% endfor %}
+
+{% for CNAMERecord in item.records.CNAME %}
+{% if CNAMERecord.name != '@' %}
+{{ CNAMERecord.name }}. {{ CNAMERecord.ttl }} CNAME {{ CNAMERecord.value }}.
+{% else %}
+  {{ CNAMERecord.ttl }} CNAME {{ CNAMERecord.value }}.
+{% endif %}
+{% endfor %}
