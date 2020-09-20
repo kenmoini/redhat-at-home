@@ -21,7 +21,7 @@
 
 - name: Generate tsigkey on first dns_systems host, Primary DNS Server
   shell:
-    cmd: "keymgr -t {{ knotknot_auth_dns_tsigkey_name }} > {{ knot_auth_dns_tsigkey_path }}"
+    cmd: "keymgr -t {{ knot_auth_dns_tsigkey_name }} > {{ knot_auth_dns_tsigkey_path }}"
   args:
     creates: "{{ knot_auth_dns_tsigkey_path }}"
   when: dns_systems[0] == hostvars[inventory_hostname]['ansible_set_hostname']

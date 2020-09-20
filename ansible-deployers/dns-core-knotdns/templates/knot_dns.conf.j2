@@ -21,7 +21,7 @@ acl:
   - id: acl_update
     address: {{ knot_auth_dns_acl_update_allow_cidr }}
     action: update
-    key: {{ knotknot_auth_dns_tsigkey_name }}
+    key: {{ knot_auth_dns_tsigkey_name }}
 
 zone:
 {% for zone in zones -%}
