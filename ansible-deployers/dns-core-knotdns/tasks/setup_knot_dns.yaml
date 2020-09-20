@@ -37,6 +37,7 @@
     tsigkey_out: "{{ tsigkey_out }}"
   delegate_to: "{{ item }}"
   with_items: "{{ ansible_play_batch }}"
+  when: dns_systems[0]['name'] == hostvars[inventory_hostname]['ansible_set_hostname']
 
 - name: Test key out
   debug:
