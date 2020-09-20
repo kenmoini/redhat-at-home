@@ -32,6 +32,16 @@
   register: tsigkey_out
   when: dns_systems[0]['name'] == hostvars[inventory_hostname]['ansible_set_hostname']
 
+- name: Set tsigkey fact on every dns_systems host
+  set_fact:
+    tsigkey_out: "{{ tsigkey_out }}"
+  delegate_to: "{{ item }}"
+  with_items: "{{ ansible_play_batch }}"
+
+- name: Test key out
+  debug:
+    msg: "{{ tsigkey_out }}"
+
 - name: Template over Knot DNS Configuration to Primary DNS Server
   template:
     src: knot_dns.conf.j2
