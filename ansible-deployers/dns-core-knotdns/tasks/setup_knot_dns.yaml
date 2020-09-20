@@ -39,10 +39,6 @@
   delegate_facts: true
   when: dns_systems[0]['name'] == hostvars[inventory_hostname]['ansible_set_hostname']
 
-- name: Test key out
-  debug:
-    msg: "{{ hostvars['localhost']['tsigkey_out'] }}"
-
 - name: Template over Knot DNS Configuration to Primary DNS Server
   template:
     src: knot_dns.conf.j2
