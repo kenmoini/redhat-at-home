@@ -62,7 +62,7 @@ zone:
     file: {{ zone.name }}.zone
     acl: [acl_update, acl_transfer]
 {% if dns_systems|length > 1 %}
-    notify: [{% for system in dns_systems %}{% if loop.index != 0 %}{{ system.name }}{% if loop.index != dns_systems|length %}, {% endif %}{% endif %}{% endfor %}]
+    notify: [{% for system in dns_systems %}{% if system.name != dns_systems[0]['name'] %}{{ system.name }}{% if loop.index != dns_systems|length %}, {% endif %}{% endif %}{% endfor %}]
 {% endif %}
 {% endfor %}
 {% endif %}
