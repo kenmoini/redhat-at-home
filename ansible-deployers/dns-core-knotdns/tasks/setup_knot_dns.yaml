@@ -24,13 +24,13 @@
     cmd: "keymgr -t {{ knot_auth_dns_tsigkey_name }} > {{ knot_auth_dns_tsigkey_path }}"
   args:
     creates: "{{ knot_auth_dns_tsigkey_path }}"
-  when: dns_systems[0] == hostvars[inventory_hostname]['ansible_set_hostname']
+  when: dns_systems[0]['name'] == hostvars[inventory_hostname]['ansible_set_hostname']
 
 - name: Read tsigkey on Primary DNS Server
   shell:
     cmd: "cat {{ knot_auth_dns_tsigkey_path }}"
   register: tsigkey_out
-  when: dns_systems[0] == hostvars[inventory_hostname]['ansible_set_hostname']
+  when: dns_systems[0]['name'] == hostvars[inventory_hostname]['ansible_set_hostname']
 
 - name: Template over Knot DNS Configuration to Primary DNS Server
   template:
@@ -43,7 +43,7 @@
   vars:
     dns_server_designation: primary
   #when: inventory_hostname == groups['dns_servers'][0]
-  when: dns_systems[0] == hostvars[inventory_hostname]['ansible_set_hostname']
+  when: dns_systems[0]['name'] == hostvars[inventory_hostname]['ansible_set_hostname']
 
 - name: Template over Zone files to Primary DNS Server
   template:
@@ -54,4 +54,4 @@
     owner: "{{ knot_user }}"
   loop: "{{ zones }}"
   notify: restart knot dns
-  when: dns_systems[0] == hostvars[inventory_hostname]['ansible_set_hostname']
+  when: dns_systems[0]['name'] == hostvars[inventory_hostname]['ansible_set_hostname']

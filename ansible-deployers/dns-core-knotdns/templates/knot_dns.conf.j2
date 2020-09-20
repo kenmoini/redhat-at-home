@@ -19,6 +19,15 @@ template:
 
 {% if dns_systems|length > 1 or knot_auth_dns_forward_resolver_fallback|bool or knot_resolving_dns|bool %}
 remote:
+{% if dns_systems|length > 1 %}
+{% for system in dns_systems %}
+{% if system.name != hostvars[inventory_hostname]['ansible_set_hostname'] %}
+  - id: {{ system.name }}
+    address: {{ system.ip }}
+    key: {{ knot_auth_dns_tsigkey_name }}
+{% endif %}
+{% endfor %}
+{% endif %}
 {% if knot_auth_dns_forward_resolver_fallback|bool %}
 {% for server in knot_auth_dns_forward_resolver_fallback_servers %}
   - id: {{ server.remote_name }}
@@ -37,6 +46,10 @@ mod-dnsproxy:
 {% endif %}
 
 acl:
+  - id: acl_transfer
+    address: {{ knot_auth_dns_acl_transfer_allow_cidr }}
+    action: transfer
+    key: {{ knot_auth_dns_tsigkey_name }}
   - id: acl_update
     address: {{ knot_auth_dns_acl_update_allow_cidr }}
     action: update
@@ -47,10 +60,46 @@ zone:
   - domain: {{ zone.name }}
     semantic-checks: {{ knot_auth_dns_semantic_checks }}
     file: {{ zone.name }}.zone
-    acl: acl_update
+    acl: [acl_update, acl_transfer]
+    master: {{ dns_systems[0]['name'] }}
+    notify: [{% for system in dns_systems | reject('search','1') | list %}{{ system.name }}{% if loop.index != dns_systems|length %}, {% endif %}{% endfor %}]
 {% endfor %}
 {% endif %}
 
-{% if dns_server_designation == "secondary" %}
-# Secondary DNS Servers Configuration
+{% if dns_server_designation == "replica" %}
+# Replica DNS Servers Configuration
+
+{% if dns_systems|length > 1 or knot_auth_dns_forward_resolver_fallback|bool or knot_resolving_dns|bool %}
+remote:
+{% if dns_systems|length > 1 %}
+{% for system in dns_systems %}
+{% if system.name != hostvars[inventory_hostname]['ansible_set_hostname'] %}
+  - id: {{ system.name }}
+    address: {{ system.ip }}
+    key: {{ knot_auth_dns_tsigkey_name }}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if knot_auth_dns_forward_resolver_fallback|bool %}
+{% for server in knot_auth_dns_forward_resolver_fallback_servers %}
+  - id: {{ server.remote_name }}
+    address: {{ server.address }}@{{ server.port }}
+{% endfor %}
+{% endif %}
+{% endif %}
+
+acl:
+  - id: acl_notify
+    address: {{ knot_auth_dns_acl_notify_allow_cidr }}
+    action: notify
+    key: {{ knot_auth_dns_tsigkey_name }}
+
+zone:
+{% for zone in zones %}
+  - domain: {{ zone.name }}
+    semantic-checks: {{ knot_auth_dns_semantic_checks }}
+    file: {{ zone.name }}.zone
+    acl: acl_notify
+    master: {{ dns_systems[0]['name'] }}
+{% endfor %}
 {% endif %}

@@ -1,7 +1,7 @@
 $ORIGIN {{ item.name }}.
 $TTL {{ item.ttl }}
 
-@	SOA	{{ dns_systems[0] }}.{{ system_domain }}. hostmaster.{{ system_domain }}. (
+@	SOA	{{ dns_systems[0]['name'] }}.{{ system_domain }}. hostmaster.{{ system_domain }}. (
 		{{ ansible_date_time.epoch }}
 		{{ default_zone_soa_params.refresh }}
 		{{ default_zone_soa_params.retry }}

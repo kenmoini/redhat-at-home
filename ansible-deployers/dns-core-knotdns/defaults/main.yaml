@@ -1,12 +1,11 @@
 ---
 upstream_dns_servers:
-  - 1.1.1.1
-  - 1.0.0.1
+  - 192.168.42.4
 
 knot_auth_dns: true
 knot_resolving_dns: false
 
-knot_auth_dns_port: 53
+knot_auth_dns_port: 54
 knot_resolving_dns_port: 53
 
 knot_user: knot
@@ -22,6 +21,8 @@ knot_auth_dns_default_zone_path: /var/lib/knot/zones
 # knot_auth_dns_semantic_checks: off || on
 knot_auth_dns_semantic_checks: off
 
+knot_auth_dns_acl_notify_allow_cidr: 192.168.0.0/16
+knot_auth_dns_acl_transfer_allow_cidr: 192.168.0.0/16
 knot_auth_dns_acl_update_allow_cidr: 192.168.0.0/16
 
 knot_auth_dns_tsigkey_name: tsigkey.
