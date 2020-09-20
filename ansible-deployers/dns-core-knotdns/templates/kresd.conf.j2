@@ -17,3 +17,5 @@ view:addr('{{ zone.subnet }}', policy.all(policy.PASS))
 policy.add(policy.all(policy.FORWARD({
   {% for ip_address in upstream_dns_servers %}'{{ ip_address }}'{% if not loop.last %}, {% endif %}{% endfor %}
 })))
+
+cache.size = 50 * MB
