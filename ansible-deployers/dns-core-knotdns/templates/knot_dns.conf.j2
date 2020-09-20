@@ -24,12 +24,12 @@ acl:
     key: {{ knot_auth_dns_tsigkey_name }}
 
 zone:
-{% for zone in zones -%}
+{% for zone in zones %}
   - domain: {{ zone.name }}
     semantic-checks: {{ knot_auth_dns_semantic_checks }}
     file: {{ zone.name }}.zone
     acl: acl_update
-{%- endfor %}
+{% endfor %}
 {% endif %}
 
 {% if dns_server_designation == "secondary" %}
