@@ -73,13 +73,12 @@
   vars:
     dns_server_designation: replica
   when: dns_systems[0]['name'] != hostvars[inventory_hostname]['ansible_set_hostname']
-
-- name: Touch zone files on Replica
-  file:
-    path: "{{ knot_auth_dns_default_zone_path }}/{{ item.name }}.zone"
-    state: touch
-    group: "{{ knot_group }}"
-    owner: "{{ knot_user }}"
-  loop: "{{ zones }}"
-  notify: restart knot dns
-  when: dns_systems[0]['name'] != hostvars[inventory_hostname]['ansible_set_hostname']
+#- name: Touch zone files on Replica
+#  file:
+#    path: "{{ knot_auth_dns_default_zone_path }}/{{ item.name }}.zone"
+#    state: touch
+#    group: "{{ knot_group }}"
+#    owner: "{{ knot_user }}"
+#  loop: "{{ zones }}"
+#  notify: restart knot dns
+#  when: dns_systems[0]['name'] != hostvars[inventory_hostname]['ansible_set_hostname']
