@@ -1,9 +1,9 @@
 ---
 - name: Enable Knot DNS Copr Repo
   shell: dnf copr enable -y @cznic/knot-dns-latest
-  warn: false
   args:
     creates: /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:group_cznic:knot-dns-latest.repo
+    warn: false
 
 - name: Install Knot DNS
   yum:
