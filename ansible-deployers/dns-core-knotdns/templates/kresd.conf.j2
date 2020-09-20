@@ -1,0 +1,17 @@
+net.listen("127.0.0.1", {{ knot_resolving_dns_port }})
+net.listen("::1", {{ knot_resolving_dns_port }})
+net.listen("{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}", {{ knot_resolving_dns_port }})
+net.listen("{{ hostvars[inventory_hostname]['ansible_default_ipv6']['address'] }}", {{ knot_resolving_dns_port }})
+
+internalDomains = policy.todnames({
+  {% for zone in zones %}'{{ zone.name }}'{% if not loop.last %}, {% endif %}{% endfor %}
+})
+policy.add(policy.suffix(policy.FLAGS({'NO_CACHE'}), internalDomains))
+policy.add(policy.suffix(policy.STUB({'127.0.0.1@{{ knot_auth_dns_port }}' }), internalDomains))
+
+modules.load('view')
+{% for zone in zones %}
+view:addr('{{ zone.subnet }}', policy.all(policy.PASS))
+{% endfor %}
+
+policy.add(policy.all(policy.FORWARD({{% for ip_address in upstream_dns_servers %}'{{ ip_address }}'{% if not loop.last %}, {% endif %}{% endfor %}})))

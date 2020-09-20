@@ -8,6 +8,9 @@ dns_systems:
   - name: dns-core-2
     ip: 192.168.42.3
 
+upstream_dns_servers:
+  - 192.168.42.4
+
 knot_auth_dns_forward_resolver_fallback: false
 knot_auth_dns_forward_resolver_fallback_servers:
   - remote_name: pihole

@@ -1,9 +1,6 @@
 ---
-upstream_dns_servers:
-  - 192.168.42.4
-
 knot_auth_dns: true
-knot_resolving_dns: false
+knot_resolving_dns: true
 
 knot_auth_dns_port: 54
 knot_resolving_dns_port: 53
