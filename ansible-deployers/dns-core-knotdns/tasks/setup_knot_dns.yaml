@@ -49,7 +49,9 @@
   template:
     src: knot_dns.zone.j2
     dest: "{{ knot_auth_dns_default_zone_path }}/{{ item.name }}.zone"
+    backup: yes
     group: "{{ knot_group }}"
     owner: "{{ knot_user }}"
   loop: "{{ zones }}"
-  notify: restart dnsmasq
+  notify: restart knot dns
+  when: dns_systems[0] == hostvars[inventory_hostname]['ansible_set_hostname']
