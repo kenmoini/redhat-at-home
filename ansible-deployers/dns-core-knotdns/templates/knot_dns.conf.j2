@@ -61,9 +61,9 @@ zone:
     semantic-checks: {{ knot_auth_dns_semantic_checks }}
     file: {{ zone.name }}.zone
     acl: [acl_update, acl_transfer]
-    {% if dns_systems|length > 1 %}
+{% if dns_systems|length > 1 %}
     notify: [{% for system in dns_systems %}{% if loop.index != 0 %}{{ system.name }}{% if loop.index != dns_systems|length %}, {% endif %}{% endif %}{% endfor %}]
-    {% endif %}
+{% endif %}
 {% endfor %}
 {% endif %}
 
