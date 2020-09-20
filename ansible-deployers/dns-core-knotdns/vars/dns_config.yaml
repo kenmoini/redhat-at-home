@@ -72,6 +72,10 @@ zones:
           ttl: 6400
           value: 192.168.42.60
 
+        - name: ansible-tower
+          ttl: 6400
+          value: 192.168.42.62
+
       AAAA:
         - name: dns-core-1
           ttl: 6400
@@ -79,6 +83,33 @@ zones:
         - name: dns-core-2
           ttl: 6400
           value: fdf4:e2e0:df12:a100::21
+        - name: dns-pihole
+          ttl: 6400
+          value: fdf4:e2e0:df12:a100::54c
+
+        - name: unifi
+          ttl: 6400
+          value: fdf4:e2e0:df12:a100::0
+
+        - name: thebus
+          ttl: 6400
+          value: fdf4:e2e0:df12:a100::30
+
+        - name: freeipa
+          ttl: 6400
+          value: fdf4:e2e0:df12:a100::22
+
+        - name: freeipa-ca
+          ttl: 6400
+          value: fdf4:e2e0:df12:a100::22
+
+        - name: keycloak
+          ttl: 6400
+          value: fdf4:e2e0:df12:a100::23
+
+        - name: ansible-tower
+          ttl: 6400
+          value: fdf4:e2e0:df12:a100::62
 
       TXT:
         - name: _kerberos
@@ -192,6 +223,16 @@ zones:
         - name: dns-core-2
           ttl: 86400
           domain: kemo.labs
+
+      A:
+        - name: compendium
+          ttl: 6400
+          value: 192.168.44.63
+
+      AAAA:
+        - name: compendium
+          ttl: 6400
+          value: fdf4:e2e0:df12:a144::63
 
   - name: mgmt.kemo.labs
     subnet: 192.168.46.0/24
