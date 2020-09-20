@@ -34,7 +34,7 @@
 
 - name: Set tsigkey fact to localhost
   set_fact:
-    tsigkey_out: "{{ tsigkey_out }}"
+    tsigkey_out: "{{ tsigkey_out.stdout }}"
   delegate_to: localhost
   delegate_facts: true
   when: dns_systems[0]['name'] == hostvars[inventory_hostname]['ansible_set_hostname']

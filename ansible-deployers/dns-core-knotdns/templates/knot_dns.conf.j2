@@ -12,7 +12,7 @@ template:
   - id: default
     storage: {{ knot_auth_dns_default_zone_path }}
 
-{{ tsigkey_out.stdout }}
+{{ hostvars['localhost']['tsigkey_out'] }}
 
 {% if dns_server_designation == "primary" %}
 # Primary DNS Server Configuration
