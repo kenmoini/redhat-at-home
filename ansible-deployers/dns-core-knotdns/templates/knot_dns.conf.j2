@@ -1,6 +1,6 @@
 server:
     identity: {{ hostvars[inventory_hostname]['ansible_set_hostname'] }}.{{ system_domain }}
-    listen: [ 127.0.0.1@{{ knot_auth_dns_port }}, ::1@{{ knot_auth_dns_port }} ]
+    listen: [ 127.0.0.1@{{ knot_auth_dns_port }}, ::1@{{ knot_auth_dns_port }}, {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}@{{ knot_auth_dns_port }}, {{ hostvars[inventory_hostname]['ansible_default_ipv6']['address'] }}@{{ knot_auth_dns_port }} ]
     rundir: "/run/knot"
     user: {{ knot_user }}:{{ knot_group }}
 
