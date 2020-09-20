@@ -172,13 +172,6 @@ zones:
         - name: dns-core-2
           ttl: 86400
           domain: kemo.labs
-      A:
-        - name: dns-core-1
-          ttl: 86400
-          value: 192.168.42.2
-        - name: dns-core-2
-          ttl: 86400
-          value: 192.168.42.3
 
   - name: mgmt.kemo.labs
     subnet: 192.168.46.0/24
@@ -234,6 +227,28 @@ zones:
 #          ttl: 6400
 #          value: dns-core-2.example.com
 #
+#      MX:
+#        - name: '@'
+#          ttl: 3600
+#          priority: 1
+#          value: ASPMX.L.GOOGLE.COM
+#        - name: '@'
+#          ttl: 3600
+#          priority: 5
+#          value: ALT1.ASPMX.L.GOOGLE.COM
+#        - name: '@'
+#          ttl: 3600
+#          priority: 5
+#          value: ALT2.ASPMX.L.GOOGLE.COM
+#        - name: '@'
+#          ttl: 3600
+#          priority: 10
+#          value: ALT3.ASPMX.L.GOOGLE.COM
+#        - name: '@'
+#          ttl: 3600
+#          priority: 10
+#          value: ALT4.ASPMX.L.GOOGLE.COM
+#
 #      TXT:
 #        - name: '@'
 #          ttl: 6400
@@ -254,18 +269,11 @@ zones:
 #      NS:
 #        - name: dns-core-1
 #          ttl: 86400
-#          domain: kemo.labs
+#          domain: example.com
 #        - name: dns-core-2
 #          ttl: 86400
-#          domain: kemo.labs
+#          domain: example.com
 #      A:
-#        - name: dns-core-1
-#          ttl: 86400
-#          value: 192.168.42.2
-#        - name: dns-core-2
-#          ttl: 86400
-#          value: 192.168.42.3
-#
 #        - name: '@'
 #          ttl: 3600
 #          value: 192.168.42.100
