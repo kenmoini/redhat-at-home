@@ -1,1 +1,25 @@
 ---
+upstream_dns_servers:
+  - 1.1.1.1
+  - 1.0.0.1
+
+knot_auth_dns: true
+knot_resolving_dns: true
+
+knot_auth_dns_port: 54
+knot_resolving_dns_port: 53
+
+knot_user: knot
+knot_group: knot
+
+# knot_auth_dns_logging options: stdout, stderr, syslog, /path/to/file
+knot_auth_dns_logging: syslog
+# knot_auth_dns_logging_level options from least to most verbose: critical, error, warning, notice, info, debug
+knot_auth_dns_logging_level: info
+
+knot_auth_dns_default_zone_path: /var/lib/knot/zones
+
+# knot_auth_dns_semantic_checks: off || on
+knot_auth_dns_semantic_checks: off
+
+knot_auth_dns_acl_update_allow_cidr: 192.168.0.0/16

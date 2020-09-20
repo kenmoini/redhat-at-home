@@ -1,6 +1,7 @@
 ---
 - name: Enable Knot DNS Copr Repo
   shell: dnf copr enable -y @cznic/knot-dns-latest
+  warn: false
   args:
     creates: /etc/yum.repos.d/_copr:copr.fedorainfracloud.org:group_cznic:knot-dns-latest.repo
 
@@ -9,3 +10,39 @@
     name: knot
     state: latest
     update_cache: yes
+
+- name: Create Zones directory
+  file:
+    path: /var/lib/knot/
+    state: directory
+    group: "{{ knot_group }}"
+    owner: "{{ knot_user }}"
+    mode: 0770
+
+- name: Generate tsigkey on first dns_systems host, Primary DNS Server
+  shell:
+    cmd: keymgr -t tsigkey. > /var/lib/knot/dns-tsigkey.yml
+    args:
+      creates: /var/lib/knot/dns-tsigkey.yml
+  #when: inventory_hostname == groups['dns_servers'][0]
+  when: dns_systems[0] == hostvars[inventory_hostname]['ansible_set_hostname']
+
+- name: Read tsigkey on Primary DNS Server
+  shell:
+    cmd: cat /var/lib/knot/dns-tsigkey.yml
+  register: tsigkey_out
+  #when: inventory_hostname == groups['dns_servers'][0]
+  when: dns_systems[0] == hostvars[inventory_hostname]['ansible_set_hostname']
+
+- name: Template over Knot DNS Configuration to Primary DNS Server
+  template:
+    src: knot_dns.conf.j2
+    dest: /etc/knot/knot.conf
+    backup: yes
+    group: "{{ knot_group }}"
+    owner: "{{ knot_user }}"
+  notify: restart knot dns
+  vars:
+    dns_server_designation: primary
+  #when: inventory_hostname == groups['dns_servers'][0]
+  when: dns_systems[0] == hostvars[inventory_hostname]['ansible_set_hostname']

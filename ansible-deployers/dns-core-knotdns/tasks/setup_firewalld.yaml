@@ -5,6 +5,14 @@
     state: started
     enabled: yes
 
+- name: Enable Ports on Firewalld
+  firewalld:
+    port: "{{ item }}"
+    state: enabled
+    permanent: yes
+  with_items: "{{ firewalld_ports }}"
+  notify: reload firewalld
+
 - name: Enable Services on Firewalld
   firewalld:
     service: "{{ item }}"

@@ -9,3 +9,11 @@
     name: ["knot-resolver", "knot-utils"]
     state: latest
     update_cache: yes
+
+- name: Template over Knot Resolver Configuration
+  template:
+    src: kresd.conf.j2
+    dest: /etc/knot-resolver/kresd.conf
+    owner: knot
+    group: knot
+  notify: restart kresd

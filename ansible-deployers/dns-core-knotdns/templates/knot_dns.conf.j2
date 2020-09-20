@@ -1,0 +1,37 @@
+server:
+    identity: {{ hostvars[inventory_hostname]['ansible_set_hostname'] }}.{{ system_domain }}
+    listen: [ 127.0.0.1@{{ knot_auth_dns_port }}, ::1@{{ knot_auth_dns_port }} ]
+    rundir: "/run/knot"
+    user: {{ knot_user }}:{{ knot_group }}
+
+log:
+  - target: {{ knot_auth_dns_logging }}
+    any: {{ knot_auth_dns_logging_level }}
+
+template:
+  - id: default
+    storage: {{ knot_auth_dns_default_zone_path }}
+
+{{ tsigkey_out.stdout }}
+
+{% if dns_server_designation == "primary" %}
+# Primary DNS Server Configuration
+
+acl:
+  - id: acl_update
+    address: {{ knot_auth_dns_acl_update_allow_cidr }}
+    action: update
+    key: tsigkey.
+
+zone:
+{% for zone in zones -%}
+  - domain: {{ zone.name }}
+    semantic-checks: {{ knot_auth_dns_semantic_checks }}
+    file: {{ zone.name }}.zone
+    acl: acl_update
+{%- endfor %}
+{% endif %}
+
+{% if dns_server_designation == "secondary" %}
+# Secondary DNS Servers Configuration
+{% endif %}

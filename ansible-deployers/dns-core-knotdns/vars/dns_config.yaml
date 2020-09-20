@@ -1,1 +1,26 @@
 ---
+## Also set the individual system hostname with `ansible_set_hostname` on the inventory per DNS host
+system_domain: kemo.labs
+## dns_systems must match the values set for `ansible_set_hostname` on the inventory
+dns_systems:
+  - dns-core-1
+  - dns-core-2
+
+zones:
+  - name: kemo.labs
+    subnet: 192.168.42.0/24
+
+  - name: wireless.kemo.labs
+    subnet: 192.168.40.0/24
+
+  - name: guests.kemo.labs
+    subnet: 192.168.38.0/24
+
+  - name: internet.of.shit.kemo.labs
+    subnet: 192.168.36.0/24
+
+  - name: san.kemo.labs
+    subnet: 192.168.44.0/24
+
+  - name: mgmt.kemo.labs
+    subnet: 192.168.46.0/24

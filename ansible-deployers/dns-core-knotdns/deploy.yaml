@@ -31,17 +31,22 @@
       include_tasks: tasks/setup_cockpit.yaml
       when: setup_cockpit|bool
 
-    - name: Set up Knot DNS
+    - name: Set up Knot Authoritative DNS
       include_tasks: tasks/setup_knot_dns.yaml
 
-    - name: Set up Knot Resolver
-      include_tasks: tasks/setup_knot_resolver.yaml
+  #    - name: Set up Knot Resolver
+  #      include_tasks: tasks/setup_knot_resolver.yaml
 
   handlers:
     - name: reload firewalld
       shell: firewall-cmd --reload
-#    - name: restart knot dns
-#      service:
-#        name: dnsmasq
-#        state: restarted
-#
+
+    - name: restart knot dns
+      service:
+        name: knot
+        state: restarted
+
+    - name: restart kresd
+      service:
+        name: kresd@1
+        state: restarted

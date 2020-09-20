@@ -30,4 +30,9 @@ reboot_after_kernel_update: true
 
 firewalld_services:
   - ssh
-  - dns
+
+firewalld_ports:
+  - "{{ knot_auth_dns_port }}/tcp"
+  - "{{ knot_auth_dns_port }}/udp"
+  - "{{ knot_resolving_dns_port }}/tcp"
+  - "{{ knot_resolving_dns_port }}/udp"
