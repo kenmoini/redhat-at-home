@@ -72,6 +72,14 @@ zones:
           ttl: 6400
           value: 192.168.42.60
 
+      AAAA:
+        - name: dns-core-1
+          ttl: 6400
+          value: fdf4:e2e0:df12:a100::20
+        - name: dns-core-2
+          ttl: 6400
+          value: fdf4:e2e0:df12:a100::21
+
       TXT:
         - name: _kerberos
           ttl: 6400
