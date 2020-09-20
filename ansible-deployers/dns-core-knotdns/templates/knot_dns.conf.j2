@@ -23,7 +23,7 @@ remote:
 {% for system in dns_systems %}
 {% if system.name != hostvars[inventory_hostname]['ansible_set_hostname'] %}
   - id: {{ system.name }}
-    address: {{ system.ip }}
+    address: {{ system.ip }}@{{ knot_auth_dns_port }}
     key: {{ knot_auth_dns_tsigkey_name }}
 {% endif %}
 {% endfor %}
@@ -76,7 +76,7 @@ remote:
 {% for system in dns_systems %}
 {% if system.name != hostvars[inventory_hostname]['ansible_set_hostname'] %}
   - id: {{ system.name }}
-    address: {{ system.ip }}
+    address: {{ system.ip }}@{{ knot_auth_dns_port }}
     key: {{ knot_auth_dns_tsigkey_name }}
 {% endif %}
 {% endfor %}

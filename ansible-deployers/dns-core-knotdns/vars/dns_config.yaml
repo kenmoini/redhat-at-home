@@ -35,34 +35,38 @@ zones:
           domain: kemo.labs
       A:
         - name: dns-core-1
-          ttl: 86400
+          ttl: 6400
           value: 192.168.42.2
         - name: dns-core-2
-          ttl: 86400
+          ttl: 6400
           value: 192.168.42.3
 
         - name: unifi
-          ttl: 86400
+          ttl: 6400
           value: 192.168.42.1
 
         - name: freeipa
-          ttl: 86400
+          ttl: 6400
           value: 192.168.42.7
 
         - name: freeipa-ca
-          ttl: 86400
+          ttl: 6400
           value: 192.168.42.7
 
+        - name: keycloak
+          ttl: 6400
+          value: 192.168.42.8
+
         - name: dns-pihole
-          ttl: 86400
+          ttl: 6400
           value: 192.168.42.4
 
         - name: thebus
-          ttl: 86400
+          ttl: 6400
           value: 192.168.42.30
 
         - name: vcenter
-          ttl: 86400
+          ttl: 6400
           value: 192.168.42.60
 
       TXT:
