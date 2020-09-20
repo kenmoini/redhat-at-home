@@ -12,6 +12,7 @@ $TTL {{ item.ttl }}
   {{ NSRecord.ttl }} NS {{ NSRecord.name }}.{{ NSRecord.domain }}.
 {% endfor %}
 
+{% if item.records.A is defined %}
 {% for ARecord in item.records.A %}
 {% if ARecord.name != '@' %}
 {{ ARecord.name }} {{ ARecord.ttl }} A {{ ARecord.value }}
@@ -19,7 +20,9 @@ $TTL {{ item.ttl }}
   {{ ARecord.ttl }} A {{ ARecord.value }}
 {% endif %}
 {% endfor %}
+{% endif %}
 
+{% if item.records.AAAA is defined %}
 {% for AAAARecord in item.records.AAAA %}
 {% if AAAARecord.name != '@' %}
 {{ AAAARecord.name }} {{ AAAARecord.ttl }} AAAA {{ AAAARecord.value }}
@@ -27,7 +30,9 @@ $TTL {{ item.ttl }}
   {{ AAAARecord.ttl }} AAAA {{ AAAARecord.value }}
 {% endif %}
 {% endfor %}
+{% endif %}
 
+{% if item.records.CNAME is defined %}
 {% for CNAMERecord in item.records.CNAME %}
 {% if CNAMERecord.name != '@' %}
 {{ CNAMERecord.name }}. {{ CNAMERecord.ttl }} CNAME {{ CNAMERecord.value }}.
@@ -35,3 +40,4 @@ $TTL {{ item.ttl }}
   {{ CNAMERecord.ttl }} CNAME {{ CNAMERecord.value }}.
 {% endif %}
 {% endfor %}
+{% endif %}
