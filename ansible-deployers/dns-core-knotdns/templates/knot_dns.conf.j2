@@ -99,7 +99,6 @@ zone:
 {% for zone in zones %}
   - domain: {{ zone.name }}
     semantic-checks: {{ knot_auth_dns_semantic_checks }}
-    file: {{ zone.name }}.zone
     acl: acl_notify
     master: {{ dns_systems[0]['name'] }}
 {% endfor %}
