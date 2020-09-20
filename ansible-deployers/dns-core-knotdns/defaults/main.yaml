@@ -7,7 +7,7 @@ knot_auth_dns: true
 knot_resolving_dns: false
 
 knot_auth_dns_port: 53
-#knot_resolving_dns_port: 53
+knot_resolving_dns_port: 53
 
 knot_user: knot
 knot_group: knot
