@@ -49,7 +49,6 @@
   notify: restart knot dns
   vars:
     dns_server_designation: primary
-  #when: inventory_hostname == groups['dns_servers'][0]
   when: dns_systems[0]['name'] == hostvars[inventory_hostname]['ansible_set_hostname']
 
 - name: Template over Zone files to Primary DNS Server
@@ -73,5 +72,4 @@
   notify: restart knot dns
   vars:
     dns_server_designation: replica
-  #when: inventory_hostname == groups['dns_servers'][0]
   when: dns_systems[0]['name'] != hostvars[inventory_hostname]['ansible_set_hostname']
