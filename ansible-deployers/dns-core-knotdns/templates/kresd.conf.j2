@@ -14,4 +14,6 @@ modules.load('view')
 view:addr('{{ zone.subnet }}', policy.all(policy.PASS))
 {% endfor %}
 
-policy.add(policy.all(policy.FORWARD({{% for ip_address in upstream_dns_servers %}'{{ ip_address }}'{% if not loop.last %}, {% endif %}{% endfor %}})))
+policy.add(policy.all(policy.FORWARD({
+  {% for ip_address in upstream_dns_servers %}'{{ ip_address }}'{% if not loop.last %}, {% endif %}{% endfor %}
+})))
