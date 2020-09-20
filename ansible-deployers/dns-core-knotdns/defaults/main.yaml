@@ -18,8 +18,8 @@ knot_auth_dns_logging_level: info
 
 knot_auth_dns_default_zone_path: /var/lib/knot/zones
 
-# knot_auth_dns_semantic_checks: off || on
-knot_auth_dns_semantic_checks: off
+# knot_auth_dns_semantic_checks: off || on - Important: Wrap in quotes or else it will be interpreted as a boolean
+knot_auth_dns_semantic_checks: "off"
 
 knot_auth_dns_acl_notify_allow_cidr: 192.168.0.0/16
 knot_auth_dns_acl_transfer_allow_cidr: 192.168.0.0/16
