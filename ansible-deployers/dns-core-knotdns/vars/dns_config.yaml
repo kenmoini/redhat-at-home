@@ -285,6 +285,15 @@ zones:
           domain: kemo.labs
 
       A:
+        - name: thebus
+          ttl: 6400
+          value: 192.168.44.30
+        - name: rhvm
+          ttl: 6400
+          value: 192.168.44.39
+        - name: rhv1
+          ttl: 6400
+          value: 192.168.44.40
         - name: rhv1-10g-1
           ttl: 6400
           value: 192.168.44.40
@@ -292,6 +301,9 @@ zones:
           ttl: 6400
           value: 192.168.44.41
 
+        - name: rhv2
+          ttl: 6400
+          value: 192.168.44.45
         - name: rhv2-10g-1
           ttl: 6400
           value: 192.168.44.45
@@ -304,10 +316,17 @@ zones:
           value: 192.168.44.63
 
       AAAA:
+        - name: thebus
+          ttl: 6400
+          value: fdf4:e2e0:df12:a144::30
+
         - name: rhvm
           ttl: 6400
           value: fdf4:e2e0:df12:a144::39
 
+        - name: rhv1
+          ttl: 6400
+          value: fdf4:e2e0:df12:a144::40
         - name: rhv1-10g-1
           ttl: 6400
           value: fdf4:e2e0:df12:a144::40
@@ -315,6 +334,9 @@ zones:
           ttl: 6400
           value: fdf4:e2e0:df12:a144::41
 
+        - name: rhv2
+          ttl: 6400
+          value: fdf4:e2e0:df12:a144::45
         - name: rhv2-10g-1
           ttl: 6400
           value: fdf4:e2e0:df12:a144::45
