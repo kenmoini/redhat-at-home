@@ -1,0 +1,65 @@
+---
+- name: Template over sudoers file
+  template:
+    src: sudoers.j2
+    dest: /etc/sudoers
+    owner: root
+    group: root
+    mode: 0440
+
+- name: Set local groups
+  group:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+  when: "{{ item.gid is not defined }}"
+  loop: "{{ system_groups }}"
+
+- name: Set local groups with GIDs
+  group:
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+    gid: "{{ item.gid }}"
+  when: "{{ item.gid is defined }}"
+  loop: "{{ system_groups }}"
+
+- name: Create local system users
+  user:
+    name: "{{ item.username }}"
+    state: "{{ item.state }}"
+    create_home: "{{ item.create_home }}"
+    groups: "{{ item.groups }}"
+    password: "{{ encrypted_password }}"
+  when: "{{ item.state == 'present' }}"
+  loop: "{{ sudoers_preencrypted_users }}"
+
+- name: Remove unneeded local system users
+  user:
+    name: "{{ item.username }}"
+    state: "{{ item.state }}"
+  when: "{{ item.state == 'absent' }}"
+  loop: "{{ sudoers_preencrypted_users }}"
+
+- name: Ensure sudoers.d exists
+  file:
+    path: /etc/sudoers.d
+    owner: root
+    group: root
+    mode: 0750
+    state: directory
+
+- name: Create per-user sudoers for preencrypted logins
+  template:
+    src: individual_sudoers.j2
+    dest: "/etc/sudoers.d/{{ item.username }}"
+    owner: root
+    group: root
+    mode: 0440
+  when: "{{ item.state == 'present' }}"
+  loop: "{{ sudoers_preencrypted_users }}"
+
+- name: Create per-user sudoers for preencrypted logins
+  file:
+    path: "/etc/sudoers.d/{{ item.username }}"
+    state: absent
+  when: "{{ item.state == 'absent' }}"
+  loop: "{{ sudoers_preencrypted_users }}"

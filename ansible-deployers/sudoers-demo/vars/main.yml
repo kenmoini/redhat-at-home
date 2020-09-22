@@ -1,0 +1,40 @@
+---
+enable_sudoers_dir: true
+enable_wheel_group: true
+
+system_groups:
+  - name: atd-admins
+    state: present
+    gid: 9001
+  - name: karen
+    state: absent
+  - name: kemo
+    state: absent
+
+sudoers_preencrypted_users:
+  - username: bob
+    state: present
+    create_home: yes
+    groups:
+      - bob
+      - sudoers
+      - atd-admins
+    authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDVdImI1lN6wNjITP1Fh6g3l8ggij8Vu38EcrKuBxeaeWS91mkWmUEQKIJJLvQd/AMb40sKrbehO1WX+qRlEI4grUGNy8xKdMmoBz8Y8RDLt2eXcYi6bcaz4grqhUGMkgtg+jRDkzhc162SrrYdV33mzRO9qaqhV+u5q+qTKmjmtMF6gpoA7Bh24oyqYhTPVEr2SpunOXskhvYy/lWqINmKBLo6Zp9HlJtwWZ5v2rnP4JZwoIDVQaLWDc58xTkUOH1hqmUhJtVdyQNDXcXeetzg+a4uQ4AawrToS26NDMo6RUwnAiUjbyj2105Q2oF4AlCUiWPj7bJQdlZBkDZWiesW/msY/BUTndCRU9QSLdk/EVGktD1QX4//pC/8IbwIwCQPJQWNcqVvR9m/CfKq55Bduc3ezuWn7szoL4u6GHT2HyOXNyFmu7anH5LCs8M2++lBkOTYhgBO08QCz3+yctT1efQYn4eHFD3RdLxdFRoS8TUEz7fIm3PEM8DJzWNgwmK6t0kcgOj9djpRZN9g9GCvc/DWFW8Mk7sishaSQk4T9j0YBXpbdnblf4fcZaQtEo8QqCBVfrWRJes/Xq81FO/3awWE4sRfe90I8dATMF1xz90dcSPLi4yQPvU97fdt+jxN059pE2VASWV7YjXMy060mIlJShtWjwZFEvQ3iKVt4w== kenmoini@kmoini-mac
+    # Generated with:
+    # python3 -c "from getpass import getpass; from crypt import *; p=getpass(); print('\n'+crypt(p, METHOD_SHA512)) if p==getpass('Please repeat: ') else print('\nFailed repeating.')"
+    encrypted_password: $6$7GlULOOYrHrXEEzV$VB4HZcx.R/Ft/UjMT/CUNtRh8nj0ttIuf/2pLc8Nz4J13gSozQizJTwynU2QL.t65.xxRKiCNWhr6Hxdl0fhm0
+    sudoers_params: "ALL=(ALL) NOPASSWD: ALL"
+
+  - username: karen
+    state: absent
+
+  - username: pat
+    state: present
+    create_home: no
+    groups:
+      - pat
+    authorized_keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDVdImI1lN6wNjITP1Fh6g3l8ggij8Vu38EcrKuBxeaeWS91mkWmUEQKIJJLvQd/AMb40sKrbehO1WX+qRlEI4grUGNy8xKdMmoBz8Y8RDLt2eXcYi6bcaz4grqhUGMkgtg+jRDkzhc162SrrYdV33mzRO9qaqhV+u5q+qTKmjmtMF6gpoA7Bh24oyqYhTPVEr2SpunOXskhvYy/lWqINmKBLo6Zp9HlJtwWZ5v2rnP4JZwoIDVQaLWDc58xTkUOH1hqmUhJtVdyQNDXcXeetzg+a4uQ4AawrToS26NDMo6RUwnAiUjbyj2105Q2oF4AlCUiWPj7bJQdlZBkDZWiesW/msY/BUTndCRU9QSLdk/EVGktD1QX4//pC/8IbwIwCQPJQWNcqVvR9m/CfKq55Bduc3ezuWn7szoL4u6GHT2HyOXNyFmu7anH5LCs8M2++lBkOTYhgBO08QCz3+yctT1efQYn4eHFD3RdLxdFRoS8TUEz7fIm3PEM8DJzWNgwmK6t0kcgOj9djpRZN9g9GCvc/DWFW8Mk7sishaSQk4T9j0YBXpbdnblf4fcZaQtEo8QqCBVfrWRJes/Xq81FO/3awWE4sRfe90I8dATMF1xz90dcSPLi4yQPvU97fdt+jxN059pE2VASWV7YjXMy060mIlJShtWjwZFEvQ3iKVt4w== kenmoini@kmoini-mac
+    encrypted_password: $6$7GlULOOYrHrXEEzV$VB4HZcx.R/Ft/UjMT/CUNtRh8nj0ttIuf/2pLc8Nz4J13gSozQizJTwynU2QL.t65.xxRKiCNWhr6Hxdl0fhm0
+    sudoers_params: "localhost=/sbin/shutdown -h now"
