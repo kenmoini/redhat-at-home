@@ -1,6 +1,8 @@
 ---
 - name: Configure sudoers and system users
   hosts: atd_systems
+  gather_facts: yes
+  become: yes
 
   tasks:
     - name: Include variables
