@@ -46,6 +46,7 @@
     group: root
     mode: 0750
     state: directory
+  when: enable_sudoers_dir|bool
 
 - name: Create per-user sudoers for preencrypted logins
   template:
@@ -54,12 +55,12 @@
     owner: root
     group: root
     mode: 0440
-  when: item.state == 'present'
+  when: item.state == 'present' and enable_sudoers_dir|bool
   loop: "{{ sudoers_preencrypted_users }}"
 
-- name: Create per-user sudoers for preencrypted logins
+- name: Remove per-user sudoers
   file:
     path: "/etc/sudoers.d/{{ item.username }}"
     state: absent
-  when: item.state == 'absent'
+  when: item.state == 'absent' and enable_sudoers_dir|bool
   loop: "{{ sudoers_preencrypted_users }}"
