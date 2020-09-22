@@ -11,7 +11,7 @@
   group:
     name: "{{ item.name }}"
     state: "{{ item.state }}"
-  when: "{{ item.gid is not defined }}"
+  when: item.gid is not defined
   loop: "{{ system_groups }}"
 
 - name: Set local groups with GIDs
