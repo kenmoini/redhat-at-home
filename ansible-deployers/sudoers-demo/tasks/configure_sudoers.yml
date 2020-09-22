@@ -19,7 +19,7 @@
     name: "{{ item.name }}"
     state: "{{ item.state }}"
     gid: "{{ item.gid }}"
-  when: "{{ item.gid is defined }}"
+  when: item.gid is defined
   loop: "{{ system_groups }}"
 
 - name: Create local system users
@@ -28,15 +28,15 @@
     state: "{{ item.state }}"
     create_home: "{{ item.create_home }}"
     groups: "{{ item.groups }}"
-    password: "{{ encrypted_password }}"
-  when: "{{ item.state == 'present' }}"
+    password: "{{ item.encrypted_password }}"
+  when: item.state == 'present'
   loop: "{{ sudoers_preencrypted_users }}"
 
 - name: Remove unneeded local system users
   user:
     name: "{{ item.username }}"
     state: "{{ item.state }}"
-  when: "{{ item.state == 'absent' }}"
+  when: item.state == 'absent'
   loop: "{{ sudoers_preencrypted_users }}"
 
 - name: Ensure sudoers.d exists
@@ -54,12 +54,12 @@
     owner: root
     group: root
     mode: 0440
-  when: "{{ item.state == 'present' }}"
+  when: item.state == 'present'
   loop: "{{ sudoers_preencrypted_users }}"
 
 - name: Create per-user sudoers for preencrypted logins
   file:
     path: "/etc/sudoers.d/{{ item.username }}"
     state: absent
-  when: "{{ item.state == 'absent' }}"
+  when: item.state == 'absent'
   loop: "{{ sudoers_preencrypted_users }}"
