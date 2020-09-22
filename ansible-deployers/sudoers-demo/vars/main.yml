@@ -8,7 +8,7 @@ system_groups:
     gid: 9001
   - name: karen
     state: absent
-  - name: kemo
+  - name: kemosabi
     state: absent
 
 sudoers_preencrypted_users:
