@@ -1,0 +1,12 @@
+---
+- name: Configure sudoers and system users
+  hosts: atd_systems
+  gather_facts: yes
+  become: yes
+
+  tasks:
+    - name: Include variables
+      include_vars: vars/main.yml
+
+    - name: Include sudoers task
+      include_tasks: tasks/configure_sudoers.yml
