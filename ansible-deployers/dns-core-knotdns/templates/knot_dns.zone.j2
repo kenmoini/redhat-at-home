@@ -1,7 +1,7 @@
 $ORIGIN {{ item.name }}.
 $TTL {{ item.ttl }}
 
-@	SOA	{{ dns_systems[0]['name'] }}.{{ system_domain }}. hostmaster.{{ system_domain }}. (
+@ IN  SOA	{{ dns_systems[0]['name'] }}.{{ system_domain }}. hostmaster.{{ system_domain }}. (
 		{{ ansible_date_time.epoch }}
 		{{ default_zone_soa_params.refresh }}
 		{{ default_zone_soa_params.retry }}
@@ -9,15 +9,15 @@ $TTL {{ item.ttl }}
 		{{ default_zone_soa_params.min_ttl }} )
 
 {% for NSRecord in item.records.NS %}
-    {{ NSRecord.ttl }} NS {{ NSRecord.name }}.{{ NSRecord.domain }}.
+    {{ NSRecord.ttl }} IN NS {{ NSRecord.name }}.{{ NSRecord.domain }}.
 {% endfor %}
 
 {% if item.records.MX is defined %}
 {% for MXRecord in item.records.MX %}
 {% if MXRecord.name != '@' %}
-{{ MXRecord.name }} {{ MXRecord.ttl }} MX {{ MXRecord.priority }} {{ MXRecord.value }}.
+{{ MXRecord.name }} {{ MXRecord.ttl }} IN MX {{ MXRecord.priority }} {{ MXRecord.value }}.
 {% else %}
-  {{ MXRecord.ttl }} MX {{ MXRecord.priority }} {{ MXRecord.value }}.
+  {{ MXRecord.ttl }} IN MX {{ MXRecord.priority }} {{ MXRecord.value }}.
 {% endif %}
 {% endfor %}
 {% endif %}
@@ -25,9 +25,9 @@ $TTL {{ item.ttl }}
 {% if item.records.A is defined %}
 {% for ARecord in item.records.A %}
 {% if ARecord.name != '@' %}
-{{ ARecord.name }} {{ ARecord.ttl }} A {{ ARecord.value }}
+{{ ARecord.name }} {{ ARecord.ttl }} IN A {{ ARecord.value }}
 {% else %}
-  {{ ARecord.ttl }} A {{ ARecord.value }}
+  {{ ARecord.ttl }} IN A {{ ARecord.value }}
 {% endif %}
 {% endfor %}
 {% endif %}
@@ -35,9 +35,9 @@ $TTL {{ item.ttl }}
 {% if item.records.AAAA is defined %}
 {% for AAAARecord in item.records.AAAA %}
 {% if AAAARecord.name != '@' %}
-{{ AAAARecord.name }} {{ AAAARecord.ttl }} AAAA {{ AAAARecord.value }}
+{{ AAAARecord.name }} {{ AAAARecord.ttl }} IN AAAA {{ AAAARecord.value }}
 {% else %}
-  {{ AAAARecord.ttl }} AAAA {{ AAAARecord.value }}
+  {{ AAAARecord.ttl }} IN AAAA {{ AAAARecord.value }}
 {% endif %}
 {% endfor %}
 {% endif %}
@@ -45,9 +45,9 @@ $TTL {{ item.ttl }}
 {% if item.records.CNAME is defined %}
 {% for CNAMERecord in item.records.CNAME %}
 {% if CNAMERecord.name != '@' %}
-{{ CNAMERecord.name }} {{ CNAMERecord.ttl }} CNAME {{ CNAMERecord.value }}.
+{{ CNAMERecord.name }} {{ CNAMERecord.ttl }} IN CNAME {{ CNAMERecord.value }}.
 {% else %}
-  {{ CNAMERecord.ttl }} CNAME {{ CNAMERecord.value }}.
+  {{ CNAMERecord.ttl }} IN CNAME {{ CNAMERecord.value }}.
 {% endif %}
 {% endfor %}
 {% endif %}
@@ -55,9 +55,9 @@ $TTL {{ item.ttl }}
 {% if item.records.TXT is defined %}
 {% for TXTRecord in item.records.TXT %}
 {% if TXTRecord.name != '@' %}
-{{ TXTRecord.name }} {{ TXTRecord.ttl }} TXT "{{ TXTRecord.value }}"
+{{ TXTRecord.name }} {{ TXTRecord.ttl }} IN TXT "{{ TXTRecord.value }}"
 {% else %}
-  {{ TXTRecord.ttl }} TXT "{{ TXTRecord.value }}"
+  {{ TXTRecord.ttl }} IN TXT "{{ TXTRecord.value }}"
 {% endif %}
 {% endfor %}
 {% endif %}
@@ -65,9 +65,9 @@ $TTL {{ item.ttl }}
 {% if item.records.SRV is defined %}
 {% for SRVRecord in item.records.SRV %}
 {% if SRVRecord.name != '@' %}
-{{ SRVRecord.name }} {{ SRVRecord.ttl }} SRV {{ SRVRecord.priority }} {{ SRVRecord.weight }} {{ SRVRecord.port }} {{ SRVRecord.value }}.
+{{ SRVRecord.name }} {{ SRVRecord.ttl }} IN SRV {{ SRVRecord.priority }} {{ SRVRecord.weight }} {{ SRVRecord.port }} {{ SRVRecord.value }}.
 {% else %}
-  {{ SRVRecord.ttl }} SRV {{ SRVRecord.priority }} {{ SRVRecord.weight }} {{ SRVRecord.port }} {{ SRVRecord.value }}.
+  {{ SRVRecord.ttl }} IN SRV {{ SRVRecord.priority }} {{ SRVRecord.weight }} {{ SRVRecord.port }} {{ SRVRecord.value }}.
 {% endif %}
 {% endfor %}
 {% endif %}

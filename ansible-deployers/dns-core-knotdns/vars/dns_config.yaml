@@ -107,67 +107,67 @@ zones:
           value: 192.168.42.62
 
       AAAA:
-        - name: dns-core-1
+        - name: dns-core-1-v6
           ttl: 6400
           value: fdf4:e2e0:df12:a100::20
-        - name: dns-core-2
+        - name: dns-core-2-v6
           ttl: 6400
           value: fdf4:e2e0:df12:a100::21
-        - name: dns-pihole
+        - name: dns-pihole-v6
           ttl: 6400
           value: fdf4:e2e0:df12:a100::54c
 
-        - name: unifi
+        - name: unifi-v6
           ttl: 6400
           value: fdf4:e2e0:df12:a100::0
 
-        - name: thebus
+        - name: thebus-v6
           ttl: 6400
           value: fdf4:e2e0:df12:a100::30
 
-        - name: freeipa
+        - name: freeipa-v6
           ttl: 6400
           value: fdf4:e2e0:df12:a100::22
 
-        - name: freeipa-ca
+        - name: freeipa-ca-v6
           ttl: 6400
           value: fdf4:e2e0:df12:a100::22
 
-        - name: keycloak
+        - name: keycloak-v6
           ttl: 6400
           value: fdf4:e2e0:df12:a100::23
 
-        - name: rhvm
+        - name: rhvm-v6
           value: fdf4:e2e0:df12:a100::39
           ttl: 6400
 
-        - name: rhv1
+        - name: rhv1-v6
           value: fdf4:e2e0:df12:a100::40
           ttl: 6400
-        - name: rhv1-nic-2
+        - name: rhv1-nic-2-v6
           value: fdf4:e2e0:df12:a100::41
           ttl: 6400
-        - name: rhv1-nic-3
+        - name: rhv1-nic-3-v6
           value: fdf4:e2e0:df12:a100::42
           ttl: 6400
-        - name: rhv1-nic-4
+        - name: rhv1-nic-4-v6
           value: fdf4:e2e0:df12:a100::43
           ttl: 6400
 
-        - name: rhv2
+        - name: rhv2-v6
           value: fdf4:e2e0:df12:a100::45
           ttl: 6400
-        - name: rhv2-nic-2
+        - name: rhv2-nic-2-v6
           value: fdf4:e2e0:df12:a100::46
           ttl: 6400
-        - name: rhv2-nic-3
+        - name: rhv2-nic-3-v6
           value: fdf4:e2e0:df12:a100::47
           ttl: 6400
-        - name: rhv2-nic-4
+        - name: rhv2-nic-4-v6
           value: fdf4:e2e0:df12:a100::48
           ttl: 6400
 
-        - name: ansible-tower
+        - name: ansible-tower-v6
           ttl: 6400
           value: fdf4:e2e0:df12:a100::62
 
@@ -316,35 +316,35 @@ zones:
           value: 192.168.44.63
 
       AAAA:
-        - name: thebus
+        - name: thebus-v6
           ttl: 6400
           value: fdf4:e2e0:df12:a144::30
 
-        - name: rhvm
+        - name: rhvm-v6
           ttl: 6400
           value: fdf4:e2e0:df12:a144::39
 
-        - name: rhv1
+        - name: rhv1-v6
           ttl: 6400
           value: fdf4:e2e0:df12:a144::40
-        - name: rhv1-10g-1
+        - name: rhv1-10g-1-v6
           ttl: 6400
           value: fdf4:e2e0:df12:a144::40
-        - name: rhv1-10g-2
+        - name: rhv1-10g-2-v6
           ttl: 6400
           value: fdf4:e2e0:df12:a144::41
 
-        - name: rhv2
+        - name: rhv2-v6
           ttl: 6400
           value: fdf4:e2e0:df12:a144::45
-        - name: rhv2-10g-1
+        - name: rhv2-10g-1-v6
           ttl: 6400
           value: fdf4:e2e0:df12:a144::45
-        - name: rhv2-10g-2
+        - name: rhv2-10g-2-v6
           ttl: 6400
           value: fdf4:e2e0:df12:a144::46
 
-        - name: compendium
+        - name: compendium-v6
           ttl: 6400
           value: fdf4:e2e0:df12:a144::63
 
@@ -370,13 +370,13 @@ zones:
           value: 192.168.46.45
           ttl: 6400
       AAAA:
-        - name: thebus
+        - name: thebus-v6
           ttl: 6400
           value: fdf4:e2e0:df12:a146::30
-        - name: rhv1
+        - name: rhv1-v6
           ttl: 6400
           value: fdf4:e2e0:df12:a146::40
-        - name: rhv2
+        - name: rhv2-v6
           ttl: 6400
           value: fdf4:e2e0:df12:a146::45
 # example zone config
