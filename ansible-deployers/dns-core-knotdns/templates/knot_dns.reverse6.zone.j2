@@ -1,0 +1,20 @@
+$ORIGIN {{ item.subnet_v6 | ipaddr('revdns'))[-(9+(item|regex_replace('^.*/','')|int)//2):] }}.
+$TTL {{ item.ttl }}
+
+@ IN  SOA	{{ dns_systems[0]['name'] }}.{{ system_domain }}. hostmaster.{{ system_domain }}. (
+		{{ ansible_date_time.epoch }}
+		{{ default_zone_soa_params.refresh }}
+		{{ default_zone_soa_params.retry }}
+		{{ default_zone_soa_params.expire }}
+		{{ default_zone_soa_params.min_ttl }} )
+
+{% for NSRecord in item.records.NS %}
+@ {{ NSRecord.ttl }} IN NS {{ NSRecord.name }}.{{ NSRecord.domain }}.
+{% endfor %}
+
+{% if item.records.AAAA is defined %}
+{% for AAAARecord in item.records.AAAA %}
+{{ AAAARecord.value.split(':')[-1] }} {{ AAAARecord.ttl }} IN PTR {{ AAAARecord.name }}.{{ item.name }}.
+{{ (AAAARecord.value | ipaddr('revdns')) | replace((item.subnet_v6 | ipaddr('revdns'))[-(9+(item.subnet_v6|regex_replace('^.*/','')|int)//2):],'') }} {{ AAAARecord.ttl }} IN PTR {{ AAAARecord.name }}.{{ item.name }}.
+{% endfor %}
+{% endif %}

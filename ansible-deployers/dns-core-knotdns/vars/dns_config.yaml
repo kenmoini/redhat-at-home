@@ -18,6 +18,10 @@ knot_auth_dns_forward_resolver_fallback_servers:
     address: 192.168.42.4
     port: 53
 
+knot_resolver_forward_domains:
+  - name: satellite.labs
+    destination: 192.168.50.10
+
 default_zone_soa_params:
   refresh: 6h
   retry: 1h
@@ -27,6 +31,8 @@ default_zone_soa_params:
 zones:
   - name: kemo.labs
     subnet: 192.168.42.0/24
+    subnet_v6: fdf4:e2e0:df12:a100::/64
+    reverse_dns_base: 42.168.192.in-addr.arpa
     ttl: 3600
     records:
       NS:
@@ -246,6 +252,8 @@ zones:
 
   - name: wireless.kemo.labs
     subnet: 192.168.40.0/24
+    subnet_v6: fdf4:e2e0:df12:a140::/64
+    reverse_dns_base: 40.168.192.in-addr.arpa
     ttl: 3600
     records:
       NS:
@@ -258,6 +266,8 @@ zones:
 
   - name: guests.kemo.labs
     subnet: 192.168.38.0/24
+    subnet_v6: fdf4:e2e0:df12:a138::/64
+    reverse_dns_base: 38.168.192.in-addr.arpa
     ttl: 3600
     records:
       NS:
@@ -270,6 +280,8 @@ zones:
 
   - name: internet.of.shit.kemo.labs
     subnet: 192.168.36.0/24
+    subnet_v6: fdf4:e2e0:df12:a136::/64
+    reverse_dns_base: 36.168.192.in-addr.arpa
     ttl: 3600
     records:
       NS:
@@ -282,6 +294,8 @@ zones:
 
   - name: san.kemo.labs
     subnet: 192.168.44.0/24
+    subnet_v6: fdf4:e2e0:df12:a144::/64
+    reverse_dns_base: 44.168.192.in-addr.arpa
     ttl: 3600
     records:
       NS:
@@ -358,6 +372,8 @@ zones:
 
   - name: mgmt.kemo.labs
     subnet: 192.168.46.0/24
+    subnet_v6: fdf4:e2e0:df12:a146::/64
+    reverse_dns_base: 46.168.192.in-addr.arpa
     ttl: 3600
     records:
       NS:
@@ -392,6 +408,7 @@ zones:
 #zones:
 #  - name: example.com
 #    subnet: 192.168.42.0/24
+#    reverse_dns_base: 42.168.192.in-addr.arpa
 #    ttl: 3600
 #    records:
 #      NS:

@@ -1,0 +1,19 @@
+$ORIGIN {{ item.reverse_dns_base }}.
+$TTL {{ item.ttl }}
+
+@ IN  SOA	{{ dns_systems[0]['name'] }}.{{ system_domain }}. hostmaster.{{ system_domain }}. (
+		{{ ansible_date_time.epoch }}
+		{{ default_zone_soa_params.refresh }}
+		{{ default_zone_soa_params.retry }}
+		{{ default_zone_soa_params.expire }}
+		{{ default_zone_soa_params.min_ttl }} )
+
+{% for NSRecord in item.records.NS %}
+@ {{ NSRecord.ttl }} IN NS {{ NSRecord.name }}.{{ NSRecord.domain }}.
+{% endfor %}
+
+{% if item.records.A is defined %}
+{% for ARecord in item.records.A %}
+{{ ARecord.value.split('.')[-1] }} {{ ARecord.ttl }} IN PTR {{ ARecord.name }}.{{ item.name }}.
+{% endfor %}
+{% endif %}
