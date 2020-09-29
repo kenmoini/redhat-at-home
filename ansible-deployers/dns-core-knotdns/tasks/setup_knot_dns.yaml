@@ -76,7 +76,7 @@
 - name: Template over Reverse IPv6 Zone files to Primary DNS Server
   template:
     src: knot_dns.reverse6.zone.j2
-    dest: "{{ knot_auth_dns_default_zone_path }}/{{ (item.subnet_v6 | ipaddr('revdns'))[-(9+(item|regex_replace('^.*/','')|int)//2):] }}.zone"
+    dest: "{{ knot_auth_dns_default_zone_path }}/{{ (item.subnet_v6 | ipaddr('revdns'))[-(9+(item.subnet_v6|regex_replace('^.*/','')|int)//2):] }}.zone"
     backup: yes
     group: "{{ knot_group }}"
     owner: "{{ knot_user }}"
