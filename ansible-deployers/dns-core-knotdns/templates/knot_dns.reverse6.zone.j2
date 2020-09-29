@@ -1,4 +1,4 @@
-$ORIGIN {{ item.subnet_v6 | ipaddr('revdns'))[-(9+(item|regex_replace('^.*/','')|int)//2):] }}.
+$ORIGIN {{ (item.subnet_v6 | ipaddr('revdns'))[-(9+(item|regex_replace('^.*/','')|int)//2):] }}.
 $TTL {{ item.ttl }}
 
 @ IN  SOA	{{ dns_systems[0]['name'] }}.{{ system_domain }}. hostmaster.{{ system_domain }}. (
