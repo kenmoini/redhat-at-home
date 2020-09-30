@@ -1,4 +1,4 @@
-$ORIGIN {{ (item.subnet_v6 | ipaddr('revdns'))[-(9+(item.subnet_v6|regex_replace('^.*/','')|int)//2):] }}.
+$ORIGIN {{ (item.subnet_v6 | ipaddr('revdns'))[-(9+(item.subnet_v6|regex_replace('^.*/','')|int)//2):] }}
 $TTL {{ item.ttl }}
 
 @ IN  SOA	{{ dns_systems[0]['name'] }}.{{ system_domain }}. hostmaster.{{ system_domain }}. (
@@ -14,7 +14,6 @@ $TTL {{ item.ttl }}
 
 {% if item.records.AAAA is defined %}
 {% for AAAARecord in item.records.AAAA %}
-{{ AAAARecord.value.split(':')[-1] }} {{ AAAARecord.ttl }} IN PTR {{ AAAARecord.name }}.{{ item.name }}.
 {{ (AAAARecord.value | ipaddr('revdns')) | replace((item.subnet_v6 | ipaddr('revdns'))[-(9+(item.subnet_v6|regex_replace('^.*/','')|int)//2):],'') }} {{ AAAARecord.ttl }} IN PTR {{ AAAARecord.name }}.{{ item.name }}.
 {% endfor %}
 {% endif %}
