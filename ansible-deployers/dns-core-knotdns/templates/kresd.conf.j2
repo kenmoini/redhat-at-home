@@ -9,6 +9,14 @@ internalDomains = policy.todnames({
 policy.add(policy.suffix(policy.FLAGS({'NO_CACHE'}), internalDomains))
 policy.add(policy.suffix(policy.STUB({'127.0.0.1@{{ knot_auth_dns_port }}' }), internalDomains))
 
+{% if generate_reverse_zones|bool %}
+internalReverseDomains = policy.todnames({
+  {% for zone in zones %}'{{ zone.reverse_dns_base }}'{% if not loop.last %}, {% endif %}{% endfor %}
+})
+policy.add(policy.suffix(policy.FLAGS({'NO_CACHE'}), internalReverseDomains))
+policy.add(policy.suffix(policy.STUB({'127.0.0.1@{{ knot_auth_dns_port }}' }), internalReverseDomains))
+{% endif %}
+
 modules.load('view')
 {% for zone in zones %}
 view:addr('{{ zone.subnet }}', policy.all(policy.PASS))
