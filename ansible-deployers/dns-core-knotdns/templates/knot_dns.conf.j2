@@ -55,6 +55,16 @@ acl:
     action: update
     key: {{ knot_auth_dns_tsigkey_name }}
 
+{% if generate_reverse_zones|bool %}
+mod-synthrecord:
+{% for zone in zones %}
+  - id: {{ zone.reverse_dns_base | regex_replace('[^0-9a-zA-Z]+','')}}
+    type: reverse
+    network: {{ zone.subnet }}
+    origin: {{ zone.name }}
+{% endfor %}
+{% endif %}
+
 zone:
 {% for zone in zones %}
   - domain: {{ zone.name }}
@@ -75,16 +85,6 @@ zone:
 {% if dns_systems|length > 1 %}
     notify: [{% for system in dns_systems %}{% if system.name != dns_systems[0]['name'] %}{{ system.name }}{% if loop.index != dns_systems|length %}, {% endif %}{% endif %}{% endfor %}]
 {% endif %}
-{% endfor %}
-{% endif %}
-
-{% if generate_reverse_zones|bool %}
-mod-synthrecord:
-{% for zone in zones %}
-  - id: {{ zone.reverse_dns_base | regex_replace('[^0-9a-zA-Z]+','')}}
-    type: reverse
-    network: {{ zone.subnet }}
-    origin: {{ zone.name }}
 {% endfor %}
 {% endif %}
 
