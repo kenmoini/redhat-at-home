@@ -19,8 +19,10 @@ knot_auth_dns_forward_resolver_fallback_servers:
     port: 53
 
 knot_resolver_forward_domains:
-  - name: satellite.labs
+  - name: satelliteLabs
+    zone: satellite.labs
     destination: 192.168.50.10
+    port: 53
 
 default_zone_soa_params:
   refresh: 6h
@@ -410,6 +412,7 @@ zones:
 #zones:
 #  - name: example.com
 #    subnet: 192.168.42.0/24
+#    subnet_v6: fdf4:e2e0:df12:a100::/64
 #    reverse_dns_base: 42.168.192.in-addr.arpa
 #    ttl: 3600
 #    records:

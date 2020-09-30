@@ -15,11 +15,29 @@ internalReverseDomains = policy.todnames({
 })
 policy.add(policy.suffix(policy.FLAGS({'NO_CACHE'}), internalReverseDomains))
 policy.add(policy.suffix(policy.STUB({'127.0.0.1@{{ knot_auth_dns_port }}' }), internalReverseDomains))
+
+internalReverseSixDomains = policy.todnames({
+  {% for zone in zones %}'{{ (zone.subnet_v6 | ipaddr('revdns'))[-(9+(zone.subnet_v6|regex_replace('^.*/','')|int)//2):] }}'{% if not loop.last %}, {% endif %}{% endfor %}
+})
+policy.add(policy.suffix(policy.FLAGS({'NO_CACHE'}), internalReverseSixDomains))
+policy.add(policy.suffix(policy.STUB({'127.0.0.1@{{ knot_auth_dns_port }}' }), internalReverseSixDomains))
+{% endif %}
+
+{% if knot_resolver_forward_domains|length > 0 %}
+{% for zone in knot_resolver_forward_domains %}
+{{ zone.name }} = policy.todnames({
+  '{{ zone.zone }}'
+})
+policy.add(policy.suffix(policy.FLAGS({'NO_CACHE'}), {{ zone.name }}))
+policy.add(policy.suffix(policy.STUB({'{{ zone.destination }}@{{ zone.part }}' }), {{ zone.name }}))
+{% endfor %}
 {% endif %}
 
 modules.load('view')
 {% for zone in zones %}
 view:addr('{{ zone.subnet }}', policy.all(policy.PASS))
+{% if zone.subnet_v6 is defined %}
+view:addr('{{ zone.subnet_v6 }}', policy.all(policy.PASS))
 {% endfor %}
 
 policy.add(policy.all(policy.FORWARD({
