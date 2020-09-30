@@ -12,8 +12,10 @@ $TTL {{ item.ttl }}
 @ {{ NSRecord.ttl }} IN NS {{ NSRecord.name }}.{{ NSRecord.domain }}.
 {% endfor %}
 
+{#
 {% if item.records.A is defined %}
 {% for ARecord in item.records.A %}
 {{ ARecord.value.split('.')[-1] }} {{ ARecord.ttl }} IN PTR {{ ARecord.name }}.{{ item.name }}.
 {% endfor %}
 {% endif %}
+#}
