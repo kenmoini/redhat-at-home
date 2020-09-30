@@ -38,6 +38,7 @@ modules.load('view')
 view:addr('{{ zone.subnet }}', policy.all(policy.PASS))
 {% if zone.subnet_v6 is defined %}
 view:addr('{{ zone.subnet_v6 }}', policy.all(policy.PASS))
+{% endif %}
 {% endfor %}
 
 policy.add(policy.all(policy.FORWARD({
