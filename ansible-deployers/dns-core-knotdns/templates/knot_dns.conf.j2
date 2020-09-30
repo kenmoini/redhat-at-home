@@ -65,6 +65,15 @@ zone:
     notify: [{% for system in dns_systems %}{% if system.name != dns_systems[0]['name'] %}{{ system.name }}{% if loop.index != dns_systems|length %}, {% endif %}{% endif %}{% endfor %}]
 {% endif %}
 {% endfor %}
+{% for zone in zones %}
+  - domain: {{ zone.reverse_dns_base }}
+    semantic-checks: {{ knot_auth_dns_semantic_checks }}
+    file: {{ zone.reverse_dns_base }}.zone
+    acl: [acl_update, acl_transfer]
+{% if dns_systems|length > 1 %}
+    notify: [{% for system in dns_systems %}{% if system.name != dns_systems[0]['name'] %}{{ system.name }}{% if loop.index != dns_systems|length %}, {% endif %}{% endif %}{% endfor %}]
+{% endif %}
+{% endfor %}
 {% endif %}
 
 {% if dns_server_designation == "replica" %}
@@ -98,6 +107,12 @@ acl:
 zone:
 {% for zone in zones %}
   - domain: {{ zone.name }}
+    semantic-checks: {{ knot_auth_dns_semantic_checks }}
+    acl: acl_notify
+    master: {{ dns_systems[0]['name'] }}
+{% endfor %}
+{% for zone in zones %}
+  - domain: {{ zone.reverse_dns_base }}
     semantic-checks: {{ knot_auth_dns_semantic_checks }}
     acl: acl_notify
     master: {{ dns_systems[0]['name'] }}
