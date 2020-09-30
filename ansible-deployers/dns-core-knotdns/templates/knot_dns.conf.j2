@@ -65,15 +65,29 @@ zone:
     notify: [{% for system in dns_systems %}{% if system.name != dns_systems[0]['name'] %}{{ system.name }}{% if loop.index != dns_systems|length %}, {% endif %}{% endif %}{% endfor %}]
 {% endif %}
 {% endfor %}
+{% if generate_reverse_zones|bool %}
 {% for zone in zones %}
-  - domain: {{ zone.reverse_dns_base }}
-    semantic-checks: {{ knot_auth_dns_semantic_checks }}
+  - domain: {{ zone.reverse_dns_base }}.
     file: {{ zone.reverse_dns_base }}.zone
+    semantic-checks: {{ knot_auth_dns_semantic_checks }}
+    module: mod-synthrecord/{{ zone.reverse_dns_base | regex_replace('[^0-9a-zA-Z]+','')}}
     acl: [acl_update, acl_transfer]
 {% if dns_systems|length > 1 %}
     notify: [{% for system in dns_systems %}{% if system.name != dns_systems[0]['name'] %}{{ system.name }}{% if loop.index != dns_systems|length %}, {% endif %}{% endif %}{% endfor %}]
 {% endif %}
 {% endfor %}
+{% endif %}
+
+{% if generate_reverse_zones|bool %}
+mod-synthrecord:
+{% for zone in zones %}
+  - id: {{ zone.reverse_dns_base | regex_replace('[^0-9a-zA-Z]+','')}}
+    type: reverse
+    network: {{ zone.subnet }}
+    origin: {{ zone.name }}
+{% endfor %}
+{% endif %}
+
 {% endif %}
 
 {% if dns_server_designation == "replica" %}
@@ -107,12 +121,6 @@ acl:
 zone:
 {% for zone in zones %}
   - domain: {{ zone.name }}
-    semantic-checks: {{ knot_auth_dns_semantic_checks }}
-    acl: acl_notify
-    master: {{ dns_systems[0]['name'] }}
-{% endfor %}
-{% for zone in zones %}
-  - domain: {{ zone.reverse_dns_base }}
     semantic-checks: {{ knot_auth_dns_semantic_checks }}
     acl: acl_notify
     master: {{ dns_systems[0]['name'] }}

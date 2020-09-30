@@ -28,6 +28,8 @@ default_zone_soa_params:
   expire: 1w
   min_ttl: 600
 
+generate_reverse_zones: true
+
 zones:
   - name: kemo.labs
     subnet: 192.168.42.0/24
