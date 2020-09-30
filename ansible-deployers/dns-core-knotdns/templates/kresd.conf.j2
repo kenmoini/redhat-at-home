@@ -29,7 +29,7 @@ policy.add(policy.suffix(policy.STUB({'127.0.0.1@{{ knot_auth_dns_port }}' }), i
   '{{ zone.zone }}'
 })
 policy.add(policy.suffix(policy.FLAGS({'NO_CACHE'}), {{ zone.name }}))
-policy.add(policy.suffix(policy.STUB({'{{ zone.destination }}@{{ zone.part }}' }), {{ zone.name }}))
+policy.add(policy.suffix(policy.STUB({'{{ zone.destination }}@{{ zone.port }}' }), {{ zone.name }}))
 {% endfor %}
 {% endif %}
 
