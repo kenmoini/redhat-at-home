@@ -32,6 +32,9 @@ default_zone_soa_params:
 
 generate_reverse_zones: true
 
+cleanup_old_zone_backups: true
+cleanup_old_zone_backups_older_than: 30d
+
 zones:
   - name: kemo.labs
     subnet: 192.168.42.0/24
@@ -407,6 +410,12 @@ zones:
         - name: rhv2
           ttl: 6400
           value: fdf4:e2e0:df12:a146::45
+
+  - name: satellite.labs
+    subnet: 192.168.50.0/24
+    subnet_v6: fdf4:e2e0:df12:a150::/64
+    reverse_dns_base: 50.168.192.in-addr.arpa
+    ttl: 3600
 # example zone config
 ## Assumes two authoritative dns servers at dns-core-1.example.com and dns-core-2.example.com serving both zones
 #zones:
