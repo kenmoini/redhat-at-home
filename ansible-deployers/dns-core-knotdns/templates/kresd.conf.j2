@@ -40,6 +40,15 @@ view:addr('{{ zone.subnet }}', policy.all(policy.PASS))
 view:addr('{{ zone.subnet_v6 }}', policy.all(policy.PASS))
 {% endif %}
 {% endfor %}
+{% if extra_resolver_acls is defined and extra_resolver_acls|length > 0 %}
+{% for addressBlock in extra_resolver_acls %}
+{% if addressBlock.mode == "allowed" %}
+view:addr('{{ addressBlock.subnetCIDR }}', policy.all(policy.PASS))
+{% else %}
+view:addr('{{ addressBlock.subnetCIDR }}', policy.all(policy.DROP))
+{% endif %}
+{% endfor %}
+{% endif %}
 
 policy.add(policy.all(policy.FORWARD({
   {% for ip_address in upstream_dns_servers %}'{{ ip_address }}'{% if not loop.last %}, {% endif %}{% endfor %}

@@ -30,6 +30,11 @@ default_zone_soa_params:
   expire: 1w
   min_ttl: 600
 
+extra_resolver_acls:
+  - name: openshift4
+    subnetCIDR: 10.0.0.0/16
+    mode: allowed
+
 generate_reverse_zones: true
 
 cleanup_old_zone_backups: true
