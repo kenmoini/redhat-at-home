@@ -42,10 +42,7 @@ view:addr('{{ zone.subnet_v6 }}', policy.all(policy.PASS))
 {% endfor %}
 {% if extra_resolver_acls is defined and extra_resolver_acls|length > 0 %}
 {% for addressBlock in extra_resolver_acls %}
-{% if addressBlock.mode == "allowed" %}
-view:addr('{{ addressBlock.subnetCIDR }}', policy.all(policy.PASS))
-{% else %}
-view:addr('{{ addressBlock.subnetCIDR }}', policy.all(policy.DROP))
+view:addr('{{ addressBlock.subnetCIDR }}', policy.all(policy.{{ addressBlock.mode }}))
 {% endif %}
 {% endfor %}
 {% endif %}
