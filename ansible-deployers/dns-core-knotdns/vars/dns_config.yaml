@@ -20,7 +20,7 @@ knot_auth_dns_forward_resolver_fallback_servers:
 
 knot_resolver_forward_domains:
   - name: satelliteLabs
-    zone: satellite.labs
+    zone: satellite.kemo.labs
     destination: 192.168.50.10
     port: 53
 
@@ -441,7 +441,7 @@ zones:
           ttl: 6400
           value: fdf4:e2e0:df12:a146::45
 
-  - name: satellite.labs
+  - name: satellite.kemo.labs
     subnet: 192.168.50.0/24
     subnet_v6: fdf4:e2e0:df12:a150::/64
     reverse_dns_base: 50.168.192.in-addr.arpa
