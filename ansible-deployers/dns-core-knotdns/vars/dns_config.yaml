@@ -79,6 +79,10 @@ zones:
           ttl: 6400
           value: 192.168.42.8
 
+        - name: ca
+          ttl: 6400
+          value: 192.168.42.9
+
         - name: dns-pihole
           ttl: 6400
           value: 192.168.42.4
@@ -86,6 +90,10 @@ zones:
         - name: thebus
           ttl: 6400
           value: 192.168.42.30
+
+        - name: vpn
+          value: 192.168.42.38
+          ttl: 6400
 
         - name: rhvm
           value: 192.168.42.39
@@ -171,6 +179,14 @@ zones:
         - name: keycloak
           ttl: 6400
           value: fdf4:e2e0:df12:a100::23
+
+        - name: ca
+          ttl: 6400
+          value: fdf4:e2e0:df12:a100::9
+
+        - name: vpn
+          value: fdf4:e2e0:df12:a100::38
+          ttl: 6400
 
         - name: rhvm
           value: fdf4:e2e0:df12:a100::39
