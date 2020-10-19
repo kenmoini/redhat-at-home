@@ -465,36 +465,35 @@ zones:
           ttl: 6400
           value: fdf4:e2e0:df12:a146::45
 
-  - name: kemo.network
-    subnet: 192.168.0.0/16
-    reverse_dns_base: 211.71.71.in-addr.arpa
-    ttl: 3600
-    records:
-      NS:
-        - name: dns-core-1
-          ttl: 86400
-          domain: kemo.labs
-        - name: dns-core-2
-          ttl: 86400
-          domain: kemo.labs
-      A:
-        - name: api.ocp4
-          ttl: 6400
-          value: 192.168.42.73
-
-        - name: apps.ocp4
-          ttl: 6400
-          value: 192.168.42.74
-
-        - name: "*.apps.ocp4"
-          ttl: 6400
-          value: 192.168.42.74
-
   - name: satellite.kemo.labs
     subnet: 192.168.50.0/24
     subnet_v6: fdf4:e2e0:df12:a150::/64
     reverse_dns_base: 50.168.192.in-addr.arpa
     ttl: 3600
+  #  - name: kemo.network
+  #    subnet: 192.168.0.0/16
+  #    reverse_dns_base: 211.71.71.in-addr.arpa
+  #    ttl: 3600
+  #    records:
+  #      NS:
+  #        - name: dns-core-1
+  #          ttl: 86400
+  #          domain: kemo.labs
+  #        - name: dns-core-2
+  #          ttl: 86400
+  #          domain: kemo.labs
+  #      A:
+  #        - name: api.ocp4
+  #          ttl: 6400
+  #          value: 192.168.42.73
+  #
+  #        - name: apps.ocp4
+  #          ttl: 6400
+  #          value: 192.168.42.74
+  #
+  #        - name: "*.apps.ocp4"
+  #          ttl: 6400
+  #          value: 192.168.42.74
 # example zone config
 ## Assumes two authoritative dns servers at dns-core-1.example.com and dns-core-2.example.com serving both zones
 #zones:
