@@ -11,13 +11,13 @@ policy.add(policy.suffix(policy.STUB({'127.0.0.1@{{ knot_auth_dns_port }}' }), i
 
 {% if generate_reverse_zones|bool %}
 internalReverseDomains = policy.todnames({
-  {% for zone in zones %}{% if zone.records is defined %}'{{ zone.reverse_dns_base }}'{% if not loop.last %}, {% endif %}{% endif %}{% endfor %}
+  {% for zone in zones %}{% if zone.records is defined %}{% if zone.reverse_dns_base is defined %}'{{ zone.reverse_dns_base }}'{% if not loop.last %}, {% endif %}{% endif %}{% endif %}{% endfor %}
 })
 policy.add(policy.suffix(policy.FLAGS({'NO_CACHE'}), internalReverseDomains))
 policy.add(policy.suffix(policy.STUB({'127.0.0.1@{{ knot_auth_dns_port }}' }), internalReverseDomains))
 
 internalReverseSixDomains = policy.todnames({
-  {% for zone in zones %}{% if zone.records is defined %}'{{ (zone.subnet_v6 | ipaddr('revdns'))[-(9+(zone.subnet_v6|regex_replace('^.*/','')|int)//2):] }}'{% if not loop.last %}, {% endif %}{% endif %}{% endfor %}
+  {% for zone in zones %}{% if zone.records is defined %}{% if zone.subnet_v6 is defined %}'{{ (zone.subnet_v6 | ipaddr('revdns'))[-(9+(zone.subnet_v6|regex_replace('^.*/','')|int)//2):] }}'{% if not loop.last %}, {% endif %}{% endif %}{% endif %}{% endfor %}
 })
 policy.add(policy.suffix(policy.FLAGS({'NO_CACHE'}), internalReverseSixDomains))
 policy.add(policy.suffix(policy.STUB({'127.0.0.1@{{ knot_auth_dns_port }}' }), internalReverseSixDomains))

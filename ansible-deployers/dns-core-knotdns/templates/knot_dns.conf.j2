@@ -81,12 +81,14 @@ zone:
 {% endfor %}
 {% for zone in zones %}
 {% if zone.records is defined %}
+{% if zone.subnet_v6 is defined %}
   - domain: {{ ((zone.subnet_v6 | ipaddr('revdns'))[-(9+(zone.subnet_v6|regex_replace('^.*/','')|int)//2):])[:-1] }}
     file: {{ ((zone.subnet_v6 | ipaddr('revdns'))[-(9+(zone.subnet_v6|regex_replace('^.*/','')|int)//2):])[:-1] }}.zone
     semantic-checks: {{ knot_auth_dns_semantic_checks }}
     acl: [acl_update, acl_transfer]
 {% if dns_systems|length > 1 %}
     notify: [{% for system in dns_systems %}{% if system.name != dns_systems[0]['name'] %}{{ system.name }}{% if loop.index != dns_systems|length %}, {% endif %}{% endif %}{% endfor %}]
+{% endif %}
 {% endif %}
 {% endif %}
 {% endfor %}
@@ -144,10 +146,12 @@ zone:
 {% if generate_reverse_zones|bool %}
 {% for zone in zones %}
 {% if zone.records is defined %}
+{% if zone.subnet_v6 is defined %}
   - domain: {{ ((zone.subnet_v6 | ipaddr('revdns'))[-(9+(zone.subnet_v6|regex_replace('^.*/','')|int)//2):])[:-1] }}
     semantic-checks: {{ knot_auth_dns_semantic_checks }}
     acl: acl_notify
     master: {{ dns_systems[0]['name'] }}
+{% endif %}
 {% endif %}
 {% endfor %}
 {% endif %}

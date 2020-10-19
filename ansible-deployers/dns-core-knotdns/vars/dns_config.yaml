@@ -32,7 +32,15 @@ default_zone_soa_params:
 
 extra_resolver_acls:
   - name: openshift4
-    subnetCIDR: 10.0.0.0/16
+    subnetCIDR: 10.0.0.0/8
+    # mode corresponds to kresd policy modes: PASS, DENY, DROP, REFUSE
+    mode: PASS
+  - name: openshift4SDN
+    subnetCIDR: 172.16.0.0/12
+    # mode corresponds to kresd policy modes: PASS, DENY, DROP, REFUSE
+    mode: PASS
+  - name: allKemoLabs
+    subnetCIDR: 192.168.0.0/16
     # mode corresponds to kresd policy modes: PASS, DENY, DROP, REFUSE
     mode: PASS
 
@@ -456,6 +464,31 @@ zones:
         - name: rhv2
           ttl: 6400
           value: fdf4:e2e0:df12:a146::45
+
+  - name: kemo.network
+    subnet: 192.168.0.0/16
+    reverse_dns_base: 211.71.71.in-addr.arpa
+    ttl: 3600
+    records:
+      NS:
+        - name: dns-core-1
+          ttl: 86400
+          domain: kemo.labs
+        - name: dns-core-2
+          ttl: 86400
+          domain: kemo.labs
+      A:
+        - name: api.ocp4
+          ttl: 6400
+          value: 192.168.42.73
+
+        - name: apps.ocp4
+          ttl: 6400
+          value: 192.168.42.74
+
+        - name: "*.apps.ocp4"
+          ttl: 6400
+          value: 192.168.42.74
 
   - name: satellite.kemo.labs
     subnet: 192.168.50.0/24
