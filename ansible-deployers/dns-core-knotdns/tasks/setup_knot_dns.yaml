@@ -82,7 +82,7 @@
     owner: "{{ knot_user }}"
   loop: "{{ zones }}"
   notify: restart knot dns
-  when: dns_systems[0]['name'] == hostvars[inventory_hostname]['ansible_set_hostname'] and item.records is defined
+  when: dns_systems[0]['name'] == hostvars[inventory_hostname]['ansible_set_hostname'] and item.records is defined and item.subnet_v6 is defined
 
 - name: Template over Knot DNS Configuration to Replica DNS Server
   template:
