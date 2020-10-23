@@ -99,6 +99,10 @@ zones:
           ttl: 6400
           value: 192.168.42.30
 
+        - name: gitlab
+          ttl: 6400
+          value: 192.168.42.31
+
         - name: vpn
           value: 192.168.42.38
           ttl: 6400
@@ -191,6 +195,10 @@ zones:
         - name: ca
           ttl: 6400
           value: fdf4:e2e0:df12:a100::9
+
+        - name: gitlab
+          value: fdf4:e2e0:df12:a100::31
+          ttl: 6400
 
         - name: vpn
           value: fdf4:e2e0:df12:a100::38
