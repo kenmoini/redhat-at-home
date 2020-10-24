@@ -95,6 +95,14 @@ zones:
           ttl: 6400
           value: 192.168.42.4
 
+        - name: deluge
+          ttl: 6400
+          value: 192.168.42.24
+
+        - name: winnas-pc
+          ttl: 6400
+          value: 192.168.42.25
+
         - name: thebus
           ttl: 6400
           value: 192.168.42.30
