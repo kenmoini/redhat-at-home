@@ -153,6 +153,10 @@ zones:
           ttl: 6400
           value: 192.168.42.62
 
+        - name: compendium
+          ttl: 6400
+          value: 192.168.42.63
+
         - name: satellite
           ttl: 6400
           value: 192.168.42.69
@@ -245,6 +249,10 @@ zones:
         - name: ansible-tower
           ttl: 6400
           value: fdf4:e2e0:df12:a100::62
+
+        - name: compendium
+          ttl: 6400
+          value: fdf4:e2e0:df12:a100::63
 
         - name: satellite
           ttl: 6400
@@ -547,7 +555,6 @@ zones:
         - name: "*.apps.ocp4"
           ttl: 6400
           value: fdf4:e2e0:df12:a169::71
-
   #  - name: kemo.network
   #    subnet: 192.168.0.0/16
   #    reverse_dns_base: 211.71.71.in-addr.arpa
