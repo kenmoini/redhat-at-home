@@ -25,4 +25,4 @@ knot_auth_dns_acl_update_allow_cidr: 192.168.0.0/16
 knot_auth_dns_tsigkey_name: tsigkey.
 knot_auth_dns_tsigkey_path: /var/lib/knot/dns-tsigkey.yml
 
-knot_resolving_dns_cache_size_mb: 250
+knot_resolving_dns_cache_size_mb: 1024

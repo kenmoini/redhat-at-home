@@ -493,7 +493,7 @@ zones:
     reverse_dns_base: 50.168.192.in-addr.arpa
     ttl: 3600
 
-  - name: lab.kemo.network
+  - name: rh.kemo.labs
     subnet: 192.168.69.0/24
     subnet_v6: fdf4:e2e0:df12:a169::/64
     reverse_dns_base: 69.168.192.in-addr.arpa
