@@ -135,6 +135,10 @@ zones:
         - name: rhv2
           value: 192.168.42.45
           ttl: 6400
+
+        - name: rhv3
+          value: 192.168.42.50
+          ttl: 6400
         #        - name: rhv2-nic-2
         #          value: 192.168.42.46
         #          ttl: 6400
@@ -235,6 +239,10 @@ zones:
 
         - name: rhv2
           value: fdf4:e2e0:df12:a100::45
+          ttl: 6400
+
+        - name: rhv3
+          value: fdf4:e2e0:df12:a100::50
           ttl: 6400
         #        - name: rhv2-nic-2
         #          value: fdf4:e2e0:df12:a100::46
