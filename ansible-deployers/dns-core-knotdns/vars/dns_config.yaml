@@ -177,6 +177,18 @@ zones:
           ttl: 6400
           value: 192.168.42.71
 
+        - name: api.ocp4-vcenter
+          ttl: 6400
+          value: 192.168.42.73
+
+        - name: apps.ocp4-vcenter
+          ttl: 6400
+          value: 192.168.42.74
+
+        - name: "*.apps.ocp4-vcenter"
+          ttl: 6400
+          value: 192.168.42.74
+
       AAAA:
         - name: dns-core-1
           ttl: 6400
@@ -277,6 +289,18 @@ zones:
         - name: "*.apps.ocp4"
           ttl: 6400
           value: fdf4:e2e0:df12:a100::71
+
+        - name: api.ocp4-vcenter
+          ttl: 6400
+          value: fdf4:e2e0:df12:a100::73
+
+        - name: apps.ocp4-vcenter
+          ttl: 6400
+          value: fdf4:e2e0:df12:a100::74
+
+        - name: "*.apps.ocp4-vcenter"
+          ttl: 6400
+          value: fdf4:e2e0:df12:a100::74
 
       TXT:
         - name: _kerberos
