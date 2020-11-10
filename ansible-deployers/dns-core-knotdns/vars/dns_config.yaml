@@ -201,6 +201,10 @@ zones:
           ttl: 6400
           value: 192.168.42.81
 
+        - name: certauth.winadfs
+          ttl: 6400
+          value: 192.168.42.81
+
       AAAA:
         - name: dns-core-1
           ttl: 6400
@@ -319,6 +323,10 @@ zones:
           value: fdf4:e2e0:df12:a100::80
 
         - name: winadfs
+          ttl: 6400
+          value: fdf4:e2e0:df12:a100::81
+
+        - name: certauth.winadfs
           ttl: 6400
           value: fdf4:e2e0:df12:a100::81
 
