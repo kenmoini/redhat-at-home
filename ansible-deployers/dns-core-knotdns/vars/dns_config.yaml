@@ -24,7 +24,7 @@ knot_resolver_forward_domains:
     destination: 192.168.50.10
     port: 53
   - name: winServers
-    zone: win.kemo.labs
+    zone: kemo.local
     destination: 192.168.42.80
     port: 53
 
