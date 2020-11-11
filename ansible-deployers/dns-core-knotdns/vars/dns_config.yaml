@@ -205,6 +205,10 @@ zones:
           ttl: 6400
           value: 192.168.42.81
 
+        - name: java-app-srv
+          ttl: 6400
+          value: 192.168.42.82
+
       AAAA:
         - name: dns-core-1
           ttl: 6400
@@ -329,6 +333,10 @@ zones:
         - name: certauth.winadfs
           ttl: 6400
           value: fdf4:e2e0:df12:a100::81
+
+        - name: java-app-srv
+          ttl: 6400
+          value: fdf4:e2e0:df12:a100::82
 
       TXT:
         - name: _kerberos
