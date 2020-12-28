@@ -99,6 +99,10 @@ zones:
           ttl: 6400
           value: 192.168.42.4
 
+        - name: lb
+          ttl: 6400
+          value: 192.168.42.18
+
         - name: deluge
           ttl: 6400
           value: 192.168.42.24
@@ -255,6 +259,10 @@ zones:
         - name: ca
           ttl: 6400
           value: fdf4:e2e0:df12:a100::9
+
+        - name: lb
+          ttl: 6400
+          value: fdf4:e2e0:df12:a100::18
 
         - name: gitlab
           value: fdf4:e2e0:df12:a100::31
