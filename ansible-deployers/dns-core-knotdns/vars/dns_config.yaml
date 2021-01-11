@@ -27,6 +27,10 @@ knot_resolver_forward_domains:
     zone: kemo.local
     destination: 192.168.42.80
     port: 53
+  - name: upiOCP
+    zone: vmware.labs
+    destination: 192.168.42.90
+    port: 53
 
 default_zone_soa_params:
   refresh: 6h
