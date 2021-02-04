@@ -15,10 +15,12 @@ systemctl enable --now firewalld
 # Add Cockpit and SSH to firewalld allowed services
 firewall-cmd --permanent --add-service=cockpit
 firewall-cmd --permanent --add-service=ssh
+firewall-cmd --permanent --add-service=http
+firewall-cmd --permanent --add-service=https
 firewall-cmd --reload
 
 # Enable Cockpit
-systemctl enable --now cockpit.service
+systemctl enable --now cockpit.socket
 
 # Download latest package
 wget https://releases.ansible.com/ansible-tower/setup/ansible-tower-setup-latest.tar.gz
